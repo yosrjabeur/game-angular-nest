@@ -1,0 +1,58 @@
+enum RatioType {
+  gain
+  vitesse
+  ange
+}
+
+type Palier {
+  name: String!
+  logo: String!
+  seuil: Float!
+  idcible: Int!
+  ratio: Int!
+  typeratio: RatioType!
+  unlocked: Boolean!
+}
+
+type Product {
+  id: Int!
+  name: String!
+  logo: String!
+  cout: Float!
+  croissance: Float!
+  revenu: Float!
+  vitesse: Int!
+  quantite: Int!
+  timeleft: Int!
+  managerUnlocked: Boolean!
+  paliers: [Palier!]!
+}
+
+type World {
+  name: String!
+  logo: String!
+  money: Float!
+  score: Float!
+  totalangels: Int!
+  activeangels: Int!
+  angelbonus: Int!
+  lastupdate: Int!
+  products: [Product!]!
+  allunlocks: [Palier!]!
+  upgrades: [Palier!]!
+  angelupgrades: [Palier!]!
+  managers: [Palier!]!
+}
+
+type Query {
+  getWorld(user: String!): World
+}
+
+type Mutation {
+  acheterQtProduit(user: String!, id: Int!, quantite: Int!): Product
+  lancerProductionProduit(user: String!, id: Int!): Product
+  engagerManager(user: String!, name: String!): Palier
+  acheterCashUpgrade(user: String!, name: String!): Palier
+  acheterAngelUpgrade(user: String!, name: String!): Palier
+  resetWorld(user: String!): World
+}
