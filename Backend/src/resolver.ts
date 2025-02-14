@@ -13,38 +13,43 @@ export class GraphQlResolver {
     this.service.saveWorld(user, world);
     return world;
   }
+
+
   @Mutation()
-  async acheterQtProduit(
-    @Args('user') user: string,
-    @Args('id') id: number,
-    @Args('quantite') quantite: number,
-  ) {
+async acheterQtProduit(
+  @Args('user') user: string,
+  @Args('id') id: number,
+  @Args('quantite') quantite: number,
+) {
+  let world = this.service.readUserWorld(user);
+  let product = world.products.find((p) => p.id === id);
 
-    let world = this.service.readUserWorld(user);
-    let product = world.products.find((p) => p.id === id);
-    
-    if (!product) {
-      throw new Error(`Le produit avec l'id ${id} n'existe pas`);
-    }
-
-    let cost = 0;
-    let currentCost = product.cout;
-    for (let i = 0; i < quantite; i++) {
-      cost += currentCost;
-      currentCost *= product.croissance;
-    }
-
-    if (world.money < cost) {
-      throw new Error(`Pas assez d'argent pour acheter ${quantite} produits`);
-    }
-  
-    world.money -= cost;
-    product.quantite += quantite;
-    product.cout = currentCost;
-  
-    this.service.saveWorld(user, world);
-    return product;
+  if (!product) {
+    throw new Error(`Le produit avec l'id ${id} n'existe pas`);
   }
+
+  // Crée un tableau avec la longueur de 'quantite'
+  let { cost, finalCost } = [...Array(quantite)].reduce(
+    (acc, _, i) => { // acc est l'accumulateur, et _ représente l'élément courant (non utilisé ici)
+      acc.cost += acc.finalCost; // Ajoute le coût actuel (finalCost) à l'accumulateur cost
+      acc.finalCost *= product.croissance; // Multiplie le prix actuel par le facteur de croissance (croissance)
+      return acc;
+    },
+    { cost: 0, finalCost: product.cout }
+  );
+
+  if (world.money < cost) {
+    throw new Error(`Pas assez d'argent pour acheter ${quantite} produits`);
+  }
+
+  world.money -= cost;
+  product.quantite += quantite;
+  product.cout = finalCost;
+
+  this.service.saveWorld(user, world);
+  return product;
+}
+
 
   @Mutation()
   async lancerProductionProduit(
