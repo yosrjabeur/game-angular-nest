@@ -5,6 +5,7 @@ import {GraphQLModule} from "@nestjs/graphql";
 import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
 import * as process from "process";
 import { join } from 'path';
+import { GraphQlResolver } from './resolver';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -16,8 +17,8 @@ import { join } from 'path';
       },
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [AppService, GraphQlResolver],
 })
 
 export class AppModule {}

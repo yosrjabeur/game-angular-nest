@@ -8,7 +8,7 @@ import { World } from './graphql';
 export class AppService {
   readUserWorld(user: string): World {
     try {
-      const data = fs.readFileSync(
+      let data = fs.readFileSync(
         path.join(process.cwd(), 'userworlds/', user + '-world.json'),
       );
       return JSON.parse(data.toString()) as World;
@@ -28,5 +28,30 @@ export class AppService {
         }
       },
     );
+  }
+
+  calculateWorldEvolution(world: World): World {
+    const now = Date.now();
+    const timeElapsed = now - world.lastupdate;
+
+    world.products.forEach((product) => {
+      if (product.managerUnlocked) {
+        const productionCycles = Math.floor(timeElapsed / product.vitesse);
+        world.money += productionCycles * product.quantite * product.revenu;
+        world.score += productionCycles * product.quantite * product.revenu;
+        product.timeleft = product.vitesse - (timeElapsed % product.vitesse);
+      } else if (product.timeleft > 0) {
+        if (product.timeleft <= timeElapsed) {
+          world.money += product.quantite * product.revenu;
+          world.score += product.quantite * product.revenu;
+          product.timeleft = 0;
+        } else {
+          product.timeleft -= timeElapsed;
+        }
+      }
+    });
+
+    world.lastupdate = now;
+    return world;
   }
 }
