@@ -59,7 +59,7 @@ Ce projet est développé avec une architecture en frontend et backend distincts
 ```
 
 ## Contact
-Développé par **Yosr BEN JABEUR et Chadha SAID**. Pour toute question, contactez-moi via GitHub.
+Développé par **Yosr BEN JABEUR et Chadha SAID**. Pour toute question, contactez-nous via GitHub.
 
 ---
 
