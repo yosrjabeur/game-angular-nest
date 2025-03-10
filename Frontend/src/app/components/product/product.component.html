@@ -1,0 +1,11 @@
+<div class="product">
+    <img [src]="'assets/' + product.logo" alt="{{ product.name }}" />
+    <div class="info">
+      <h3>{{ product.name }}</h3>
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="(product.timeleft / product.vitesse) * 100"></div>
+      </div>
+      <button>Buy</button>
+    </div>
+  </div>
+  

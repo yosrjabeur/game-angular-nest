@@ -1,0 +1,21 @@
+.product {
+    display: flex;
+    align-items: center;
+    background: #333;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+  }
+  .progress-bar {
+    width: 100px;
+    height: 10px;
+    background: grey;
+    border-radius: 5px;
+  }
+  .progress {
+    height: 100%;
+    background: yellow;
+    transition: width 0.5s;
+  }
+  

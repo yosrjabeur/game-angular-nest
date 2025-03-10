@@ -1,0 +1,111 @@
+body {
+  display: flex;
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
+}
+
+.sidebar {
+  width: 320px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  height: 100vh;
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 5px solid white;
+  box-shadow: 0px 0px 15px rgba(255, 0, 255, 0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 0px 20px rgba(255, 0, 255, 1);
+}
+
+.profile img:active {
+  transform: scale(1.2);
+  box-shadow: 0px 0px 25px rgba(255, 0, 255, 1);
+}
+
+.swag-stats {
+  background: white;
+  color: #00ff00;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 12px 25px;
+  border-radius: 10px;
+  text-align: center;
+  width: 85%;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 15px rgba(0, 255, 0, 0.8);
+  border: 3px solid #00ff00;
+}
+
+.nav-line {
+  position: absolute;
+  left: 25px;
+  top: 260px;
+  bottom: 20px;
+  width: 8px;
+  background: #f67ce8;
+  border-radius: 5px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  width: 100%;
+  position: relative;
+}
+
+li {
+  margin: 35px 0;
+  position: relative;
+  transform: skewX(-10deg);
+  left: 15px;
+}
+
+li a {
+  display: block;
+  background: white;
+  color: #00ff00;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 12px 25px;
+  border-radius: 5px;
+  width: 190px;
+  font-weight: bold;
+  text-align: center;
+  transform: skewX(10deg);
+  border: 2px solid #00ff00;
+  box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8);
+  transition: box-shadow 0.3s ease;
+}
+
+li a:hover {
+  box-shadow: 0px 0px 15px rgba(0, 255, 0, 1);
+}
+
+li::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  background: #8000ff;
+  border-radius: 50%;
+  border: 2px solid white;
+}

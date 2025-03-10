@@ -1,0 +1,20 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('/assets/images/home.jpg'); /* Met le bon nom de fichier */
+    background-size: cover;  /* Couvre toute la page */
+    background-position: center; /* Centre l’image */
+    background-repeat: no-repeat; /* Pas de répétition */
+    height: 100vh; /* 100% de la hauteur de la fenêtre */
+    width: 100vw; /* 100% de la largeur */
+    background-color: rgb(163, 163, 21);
+  }
+  .container {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: flex-start; /* Place la sidebar à gauche */
+    position: relative;
+  }
+  
+  
