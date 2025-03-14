@@ -1,102 +1,136 @@
-/* Container général */
+/* Structure principale */
 .container {
-    display: flex;
-    height: 100vh;
-   
-  }
-  .home {
-    position: absolute; /* Couvre tout l'écran */
-    top: 0;
-    left: 0;
-    width: 100vw; /* Largeur complète */
-    height: 100vh; /* Hauteur complète */
-    background-size: cover; /* Ajuste l'image pour couvrir */
-    background-position: center; /* Centre l'image */
-    background-repeat: no-repeat; /* Pas de répétition */
-    z-index: -1; /* Pour éviter de cacher d'autres éléments */
+  display: flex;
+  min-height: 100vh;
+  
 }
- 
-  /* Main content */
-  .main_content {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .buy_icon {
-    background: linear-gradient(45deg, #ffcc00, #ff6600);
-    padding: 10px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 0 10px #ffcc00;
-  }
-  
-  .buy_icon:hover {
-    box-shadow: 0 0 20px #ffcc00;
-  }
-  
-  /* Produits */
-  .products_container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  .column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .product {
-    display: flex;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 15px;
-    padding: 15px;
-    width: 300px;
-    align-items: center;
-    gap: 15px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .product:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #00ffcc;
-  }
-  
-  /* Effet gaming sur la photo de profil */
-  .profile_image {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid #ffcc00;
-    transition: 0.3s ease-in-out;
-  }
-  
-  .profile_image:hover {
-    box-shadow: 0 0 20px #ffcc00;
-    transform: rotate(10deg);
-  }
-  
-  /* Barre de progression */
-  .progress_bar {
-    flex-grow: 1;
-    height: 10px;
-    border-radius: 5px;
-    background: linear-gradient(90deg, #ff6600 30%, #00ffcc 100%);
-  }
-  
+
+.sidebar {
+  width: 250px;
+  height: 100vh; /* Prendre toute la hauteur de l'écran */
+  box-shadow: 3px 0 15px rgba(143, 241, 221, 0.2);
+  z-index: 1; /* Assurez qu'il est au-dessus de l'arrière-plan */
+}
+
+
+
+.main_content {
+  flex: 1;
+  position: relative;
+  padding: 80px 20px 20px 250px; /* Ajout de padding gauche */
+}
+
+/* Header */
+.header {
+  position: absolute;
+  top: 20px;
+  left: 270px; /* Décalage pour le sidebar */
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+
+.money_display {
+  font-size: 2.5em;
+  color: #00ffcc;
+  text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+  font-family: 'Orbitron', sans-serif;
+  padding: 10px 25px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  border: 2px solid #00ffcc;
+}
+
+.buy_controls {
+  display: flex;
+  gap: 15px;
+}
+
+/* Bouton BUY */
+.buy_icon {
+  background: linear-gradient(45deg, #ff6600 0%, #ffcc00 100%);
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+  font-weight: bold;
+}
+
+
+.buy_icon:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 204, 0, 0.6);
+}
+
+.buy_icon:active {
+  transform: translateY(1px);
+}
+
+.buy_icon i {
+  transition: transform 0.3s ease;
+}
+
+.buy_icon:hover i {
+  transform: rotate(15deg);
+}
+
+/* Grille de produits */
+.products_container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.products_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajuster la taille minimale */
+  gap: 30px;
+  justify-content: center;
+}
+
+.product_column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Carte de produit */
+.product {
+  background: radial-gradient(circle at top left, 
+    rgba(40, 40, 40, 0.9) 0%, 
+    rgba(20, 20, 20, 0.9) 100%);
+  border-radius: 15px;
+  padding: 20px;
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(5px);
+}
+
+.product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 255, 204, 0.3);
+  border-color: #00ffcc;
+}
+
+/* Arrière-plan */
+.home {
+  position: fixed;
+  top: 0;
+  left: 0; /* Commencer à partir du bord gauche */
+  width: 100vw; /* Prendre toute la largeur de l'écran */
+  height: 100vh; /* Prendre toute la hauteur de l'écran */
+  background-size: cover;
+  background-position: center;
+  filter: brightness(1);
+  z-index: -1;
+}

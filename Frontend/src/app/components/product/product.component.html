@@ -1,4 +1,4 @@
-@if (_product.quantite > 0) {
+<div *ngIf="_product.quantite > 0; else noProduct">
   <div class="product_container">
     <div class="product_image">
       <img [src]="server + _product.logo" alt="logo" (click)="startFabrication()">
@@ -6,18 +6,18 @@
     </div>
     <div class="product_info">
       <div class="earnings">{{ _product.revenu }}</div>
-      
+
       <app-progressbar
-      class="progressbar-container"
-      [initialValue]="_product.progress ?? 0" 
-      [vitesse]="_product.totalTime ?? 1" 
-      [orientation]="Orientation.horizontal" 
-      [auto]="true" 
-      [run]="true"
-      [frontcolor]="'#8E44AD'" 
-      [backcolor]="'#2C3E50'">
-    </app-progressbar>
-    
+        class="progressbar-container"
+        [initialValue]="_product.progress ?? 0" 
+        [vitesse]="_product.totalTime ?? 1" 
+        [orientation]="Orientation.horizontal" 
+        [auto]="true" 
+        [run]="true"
+        [frontcolor]="'#8E44AD'" 
+        [backcolor]="'#2C3E50'">
+      </app-progressbar>
+
       <div class="purchase_section">
         <button class="purchase_button" (click)="buyProduct()">
           <span>Acheter</span> {{ _product.cout | number:'1.2-2' }}
@@ -26,7 +26,9 @@
       </div>
     </div>
   </div>
-} @else {
+</div>
+
+<ng-template #noProduct>
   <div class="product_empty">
     <button class="purchase_btn" (click)="buyProduct()">
       <div class="empty_content">
@@ -42,4 +44,4 @@
       </div>
     </button>
   </div>
-}
+</ng-template>

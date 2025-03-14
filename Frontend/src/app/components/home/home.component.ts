@@ -13,6 +13,8 @@ import { CommonModule, DecimalPipe } from '@angular/common';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  multiplier: number = 1;
+  multiplierLabel: string = 'BUY x1';
   server: string;
   world: World = new World();
   product: Product = new Product();
@@ -30,7 +32,28 @@ export class HomeComponent {
     this.world.score += moneyMade;
   }
 
-  onBuy($event: number) {
-    this.world.money -= $event;
+ // home.component.ts
+onBuy(cost: number) {
+  this.world = {
+    ...this.world,
+    money: this.world.money - cost
+  };
+}
+
+  onMultiplierChange() {
+    if (this.multiplier === 1) {
+      this.multiplier = 10;
+      this.multiplierLabel = 'BUY x10';
+    } else if (this.multiplier === 10) {
+      this.multiplier = 100;
+      this.multiplierLabel = 'BUY x100';
+    } else if (this.multiplier === 100) {
+      this.multiplier = -1;
+      this.multiplierLabel = 'BUY max';
+    } else {
+      this.multiplier = 1;
+      this.multiplierLabel = 'BUY x1';
+    }
   }
+
 }
