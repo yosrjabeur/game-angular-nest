@@ -199,8 +199,8 @@ async resetWorld(@Args('user') user: string) {
   let newWorld: World = JSON.parse(JSON.stringify(origworld));
   // Réinitialiser les valeurs tout en conservant les anges et le score
   newWorld.score = world.score;
-  newWorld.totalangels = world.totalangels;
-  newWorld.activeangels = world.activeangels;
+  newWorld.totalangels = world.totalangels + nouveauxAnges;
+  newWorld.activeangels = world.activeangels + nouveauxAnges;
   newWorld.angelbonus = world.angelbonus;
 
   // Sauvegarde du nouveau monde
