@@ -1,11 +1,45 @@
-<div class="product">
-    <img [src]="'assets/' + product.logo" alt="{{ product.name }}" />
-    <div class="info">
-      <h3>{{ product.name }}</h3>
-      <div class="progress-bar">
-        <div class="progress" [style.width.%]="(product.timeleft / product.vitesse) * 100"></div>
+@if (_product.quantite > 0) {
+  <div class="product_container">
+    <div class="product_image">
+      <img [src]="server + _product.logo" alt="logo" (click)="startFabrication()">
+      <div class="quantity">{{ _product.quantite }}</div>
+    </div>
+    <div class="product_info">
+      <div class="earnings">{{ _product.revenu }}</div>
+      
+      <app-progressbar
+      class="progressbar-container"
+      [initialValue]="_product.progress ?? 0" 
+      [vitesse]="_product.totalTime ?? 1" 
+      [orientation]="Orientation.horizontal" 
+      [auto]="true" 
+      [run]="true"
+      [frontcolor]="'#8E44AD'" 
+      [backcolor]="'#2C3E50'">
+    </app-progressbar>
+    
+      <div class="purchase_section">
+        <button class="purchase_button" (click)="buyProduct()">
+          <span>Acheter</span> {{ _product.cout | number:'1.2-2' }}
+        </button>
+        <div class="timer">{{ _product.timeleft | number:'1.2-2' }}</div>
       </div>
-      <button>Buy</button>
     </div>
   </div>
-  
+} @else {
+  <div class="product_empty">
+    <button class="purchase_btn" (click)="buyProduct()">
+      <div class="empty_content">
+        <div class="empty_icon">
+          <svg width="80" height="80" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100" height="100" fill="#B06740"/>
+          </svg>
+        </div>
+        <div class="empty_details">
+          <span>{{ _product.name }}</span><br>
+          <span>{{ _product.cout }}</span>
+        </div>
+      </div>
+    </button>
+  </div>
+}

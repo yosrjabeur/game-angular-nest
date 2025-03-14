@@ -1,0 +1,102 @@
+/* Container général */
+.container {
+    display: flex;
+    height: 100vh;
+   
+  }
+  .home {
+    position: absolute; /* Couvre tout l'écran */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Largeur complète */
+    height: 100vh; /* Hauteur complète */
+    background-size: cover; /* Ajuste l'image pour couvrir */
+    background-position: center; /* Centre l'image */
+    background-repeat: no-repeat; /* Pas de répétition */
+    z-index: -1; /* Pour éviter de cacher d'autres éléments */
+}
+ 
+  /* Main content */
+  .main_content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .buy_icon {
+    background: linear-gradient(45deg, #ffcc00, #ff6600);
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #ffcc00;
+  }
+  
+  .buy_icon:hover {
+    box-shadow: 0 0 20px #ffcc00;
+  }
+  
+  /* Produits */
+  .products_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .product {
+    display: flex;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 15px;
+    width: 300px;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #00ffcc;
+  }
+  
+  /* Effet gaming sur la photo de profil */
+  .profile_image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ffcc00;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .profile_image:hover {
+    box-shadow: 0 0 20px #ffcc00;
+    transform: rotate(10deg);
+  }
+  
+  /* Barre de progression */
+  .progress_bar {
+    flex-grow: 1;
+    height: 10px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #ff6600 30%, #00ffcc 100%);
+  }
+  

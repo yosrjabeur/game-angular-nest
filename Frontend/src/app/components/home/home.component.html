@@ -1,0 +1,40 @@
+<div class="container">
+    <app-side-bar></app-side-bar>
+    <div class="main_content">
+        <div class="home" style="background-image: url('assets/images/home.jpg');"></div>
+        <div class="header">
+        <div class="player_money">
+            <div *ngIf="world">
+                <div class="player_money">
+                  $ {{ world.money | number:'1.0-0' }}
+                </div>
+              </div>              
+        </div>
+        <div class="buy_icon">
+          <i class="fa-solid fa-tags fa-rotate-by" style="--fa-rotate-angle: 314deg;">
+            <span>BUY</span>
+          </i>
+        </div>
+      </div>
+  
+      <div class="products_container" *ngIf="world?.products">
+        <div class="column">
+          <app-product *ngFor="let product of world.products.slice(0,3)" 
+            [product]="product" [world]="world"
+            (notifyProduction)="onProductionDone($event)" 
+            (onBuy)="onBuy($event)" 
+            class="product">
+          </app-product>
+        </div>
+        <div class="column">
+          <app-product *ngFor="let product of world.products.slice(3,6)" 
+            [product]="product" [world]="world"
+            (notifyProduction)="onProductionDone($event)" 
+            (onBuy)="onBuy($event)" 
+            class="product">
+          </app-product>
+        </div>
+      </div>
+    </div>
+  </div>
+  

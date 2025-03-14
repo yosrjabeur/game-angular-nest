@@ -1,21 +1,143 @@
-.product {
-    display: flex;
-    align-items: center;
-    background: #333;
-    color: white;
-    padding: 10px;
-    margin: 10px;
-    border-radius: 10px;
-  }
-  .progress-bar {
-    width: 100px;
-    height: 10px;
-    background: grey;
-    border-radius: 5px;
-  }
-  .progress {
-    height: 100%;
-    background: yellow;
-    transition: width 0.5s;
-  }
-  
+.product_container {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(145deg, #6B5B4D, #5A4B3E);
+  padding: 14px;
+  border-radius: 16px;
+  width: 480px;
+  justify-content: space-between;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
+}
+
+.product_container:hover {
+  transform: scale(1.02);
+}
+
+.product_image {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: radial-gradient(circle, #B8B8B8, #8E8E8E);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  padding: 6px;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+  transition: box-shadow 0.2s;
+}
+
+.product_image:hover {
+  box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+}
+
+.product_image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.quantity {
+  position: absolute;
+  bottom: -10px;
+  background: linear-gradient(145deg, #3A322F, #2A2220);
+  color: white;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: bold;
+  border: 2px solid #8E44AD;
+  box-shadow: 0px 0px 5px #8E44AD;
+}
+
+.product_info {
+  flex: 1;
+  padding-left: 14px;
+  color: white;
+}
+
+.earnings {
+  background: linear-gradient(145deg, #8E44AD, #6B5B4D);
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0px 0px 8px rgba(142, 68, 173, 0.7);
+}
+
+.purchase_section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.purchase_button {
+  background: linear-gradient(145deg, #B06740, #8F5232);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0px 0px 10px rgba(176, 103, 64, 0.6);
+  transition: all 0.2s ease-in-out;
+}
+
+.purchase_button:hover {
+  background: linear-gradient(145deg, #D07950, #A35C3A);
+  box-shadow: 0px 0px 12px rgba(176, 103, 64, 0.9);
+}
+
+.timer {
+  background: linear-gradient(145deg, #473B34, #322922);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.product_empty {
+  padding: 20px;
+  width: 460px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.product_empty:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: scale(1.03);
+}
+
+.empty_content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.empty_icon {
+  margin-right: 14px;
+}
+
+.empty_details {
+  color: #3A322F;
+  font-weight: bold;
+}
+.progressbar-container {
+  width: 200px; /* Ajuste la largeur selon ton besoin */
+  max-width: 100%;
+  margin-top: 6px;
+}

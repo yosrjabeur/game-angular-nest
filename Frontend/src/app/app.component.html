@@ -1,11 +1,1 @@
-<div class="container">
-  <app-side-bar></app-side-bar>
- 
-   @if (world.products) {
-    @for (product of world.products; track product.id) {
-      <app-product [product]="product"></app-product>
-    }
-  }  
-
-</div>
 <router-outlet></router-outlet>
