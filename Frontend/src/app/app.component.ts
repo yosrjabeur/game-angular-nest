@@ -9,7 +9,7 @@ import { Product } from './models/product';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, SideBarComponent],
+  imports: [RouterOutlet, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

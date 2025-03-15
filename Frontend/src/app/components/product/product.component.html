@@ -7,17 +7,17 @@
     <div class="product_info">
       <div class="earnings">{{ _product.revenu }}</div>
 
-      <app-progressbar
-        class="progressbar-container"
-        [initialValue]="_product.progress ?? 0" 
-        [vitesse]="_product.totalTime ?? 1" 
-        [orientation]="Orientation.horizontal" 
-        [auto]="true" 
-        [run]="true"
-        [frontcolor]="'#8E44AD'" 
-        [backcolor]="'#2C3E50'">
-      </app-progressbar>
-
+        <app-progressbar
+          class="progressbar-container"
+          [initialValue]="_product.progress ?? 0" 
+          [vitesse]="_product.totalTime ?? 1" 
+          [orientation]="Orientation.horizontal" 
+          [auto]="true" 
+          [run]="true"
+          [frontcolor]="'#8E44AD'" 
+          [backcolor]="'#2C3E50'">
+        </app-progressbar>
+        
       <div class="purchase_section">
         <button class="purchase_button" (click)="buyProduct()">
           <span>Acheter</span> {{ _product.cout | number:'1.2-2' }}

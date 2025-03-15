@@ -7,7 +7,7 @@ import { Product } from '../models/product';
 })
 export class WebserviceService {
   server = 'http://localhost:3000/';
-  user = 'Toto';
+  user = 'Yosr_Chadha';
 
   createClient() {
     return new Client({
