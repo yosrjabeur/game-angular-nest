@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Client, fetchExchange } from '@urql/core';
 import { ACHETER_ANGEL_UPGRADE, ACHETER_CASH_UPGRADE, ACHETER_PRODUIT, ENGAGER_MANAGER, GET_WORLD, LANCER_PRODUCTION, RESET_WORLD } from '../../Graphrequests';
 import { Product } from '../models/product';
+import { Palier } from '../models/palier';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,10 +31,10 @@ export class WebserviceService {
     }).toPromise();
   }
 
-  async engageManager(user: string, product: Product) {
+  async engagerManager(user: string, manager: Palier) {
     return await this.createClient().mutation(ENGAGER_MANAGER, {
       user: user,
-      name: product.name
+      name: manager.name
     }).toPromise();
   }
 

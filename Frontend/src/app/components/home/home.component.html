@@ -34,4 +34,11 @@
       </div>
     </div>
   </div>
+  <button mat-raised-button
+        color="primary"
+        [matBadge]="badgeManagers"
+        [matBadgeHidden]="badgeManagers === 0"
+        (click)="showManagers = !showManagers">
+  Managers
+</button>
 </div>

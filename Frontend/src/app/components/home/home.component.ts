@@ -5,19 +5,22 @@ import { Product } from '../../models/product';
 import { SideBarComponent } from "../side-bar/side-bar.component";
 import { ProductComponent } from "../product/product.component";
 import { CommonModule, DecimalPipe } from '@angular/common';
+import { MatBadgeModule } from '@angular/material/badge';  // Importer MatBadgeModule
 
 @Component({
   selector: 'app-home',
-  imports: [SideBarComponent, ProductComponent,DecimalPipe ,CommonModule,],
+  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   multiplier: number = 1;
   multiplierLabel: string = 'BUY x1';
   server: string;
   world: World = new World();
   product: Product = new Product();
+  showManagers: boolean = false;
+  badgeManagers: number = 0;
   constructor(private service: WebserviceService) {
     this.server= service.server
     service.getWorld(this.service.user).then(
@@ -25,7 +28,17 @@ export class HomeComponent {
         this.world = world.data.getWorld;
       });
   }
-
+  ngOnInit(): void {
+    this.calculateBadgeManagers();
+  }
+  // Calculer le nombre de managers accessibles
+  calculateBadgeManagers() {
+    this.badgeManagers = this.world.managers.filter(m => !m.unlocked && this.world.money >= m.seuil).length;
+  }
+  // Lorsque l'argent change, on met à jour le badge
+  onMoneyChange() {
+    this.calculateBadgeManagers();
+  }
   onProductionDone($event: { p: Product; qt: number }) {
     let moneyMade = $event.qt
     this.world.money += moneyMade;
@@ -55,5 +68,10 @@ onBuy(cost: number) {
       this.multiplierLabel = 'BUY x1';
     }
   }
+  isModalOpen = true;
 
+  handleCloseModal() {
+    this.isModalOpen = false;
+    // You can add logic to hide the modal
+  }
 }
