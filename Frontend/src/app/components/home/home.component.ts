@@ -33,12 +33,10 @@ export class HomeComponent {
   }
 
  // home.component.ts
-onBuy(cost: number) {
-  this.world = {
-    ...this.world,
-    money: this.world.money - cost
-  };
+ onBuy(cost: number) {
+  this.world.money -= cost;
 }
+
 
   onMultiplierChange() {
     if (this.multiplier === 1) {
