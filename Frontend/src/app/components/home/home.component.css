@@ -2,22 +2,22 @@
 .container {
   display: flex;
   min-height: 100vh;
-  
 }
+
 
 .sidebar {
-  width: 250px;
-  height: 100vh; /* Prendre toute la hauteur de l'écran */
+  width: 150px;
+  height: 100vh;
   box-shadow: 3px 0 15px rgba(143, 241, 221, 0.2);
-  z-index: 1; /* Assurez qu'il est au-dessus de l'arrière-plan */
+  z-index: 1;
 }
-
 
 
 .main_content {
   flex: 1;
   position: relative;
-  padding: 80px 20px 20px 250px; /* Ajout de padding gauche */
+  padding: 80px 20px 20px 250px; 
+  
 }
 
 /* Header */
@@ -89,19 +89,20 @@
   max-width: 100%;
   margin: 0 auto;
   padding-top: 40px;
+  gap: 30px;
 }
 
 .products_grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajuster la taille minimale */
-  gap: 30px;
+  grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
+  gap: 50px; /* Augmente l’espace entre les colonnes */
   justify-content: center;
 }
 
 .product_column {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 25px; /* Espacement entre les produits dans chaque colonne */
 }
 
 /* Carte de produit */
@@ -134,3 +135,12 @@
   filter: brightness(1);
   z-index: -1;
 }
+
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
