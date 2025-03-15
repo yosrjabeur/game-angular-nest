@@ -12,9 +12,10 @@ import { Orientation } from '../progressbar/progressbar.component';
   styleUrl: './product.component.css'
 })
 export class ProductComponent implements OnInit {
-  Orientation = Orientation;
+  // Orientation = Orientation;
   _product: Product = new Product();
   _world: World = new World();
+  _multiplier = 1;
   server: string;
   qtX = 'X1';
 
@@ -29,108 +30,176 @@ export class ProductComponent implements OnInit {
   updateScore() {
     if (this._product.timeleft > 0) {
       this._product.timeleft = Math.max(0, this._product.timeleft - 0.1); // Decrease time by 0.1s every tick
+      this._product.progress = 1 - (this._product.timeleft / this._product.vitesse);
     }
     this.calcScore();
   }
 
   @Input()
   set product(value: Product) {
-    if (value) {
-      this._product = value;
-      this._product.lastupdate = Date.now();
-      if (this._world.money) this.calcMaxCanBuy();
-    }
+    this._product = value;
+    this._product.lastupdate = Date.now();
+    if (this._world.money && this._product) this.calcMaxCanBuy();
   }
 
-  @Input()
-  // product.component.ts
+@Input()
 set world(value: World) {
-  if (value) {
-    this._world = {...value}; // Crée une nouvelle référence
-    this.calcMaxCanBuy();
-    this.cdRef.detectChanges();
+  this._world = value;
+    if (this._world.money && this._product) 
+      {
+        this.calcMaxCanBuy();
+      };
   }
-}
-
 
   @Output() onBuy = new EventEmitter<number>();
   @Output() notifyProduction = new EventEmitter<{ p: Product; qt: number }>();
 
   calcScore() {
+
     const currentTime = Date.now();
-    const elapsedTime = (currentTime - this._product.lastupdate) / 1000;
+
+    const elapsedTime = (currentTime - this._product.lastupdate);
+
     let moneyMade = 0;
+    if (this._product.timeleft > 0) {
+      if (this._product.managerUnlocked) {
+        this.run= true;
+        //moneyMade = Math.floor(elapsedTime / this._product.vitesse);
+        let productionCount = Math.floor((elapsedTime + this._product.vitesse - this._product.timeleft) / this._product.vitesse);
+        const remainingTime = (elapsedTime + this._product.vitesse - this._product.timeleft) % this._product.vitesse;
+        moneyMade += this._product.quantite * productionCount * this._product.revenu * (1 + this._world.activeangels * (this._world.angelbonus / 100));
 
-    if (this._product.managerUnlocked) {
-      let productionCount = 1 + Math.floor((elapsedTime - this._product.timeleft) / this._product.vitesse);
-      const remainingTime = (elapsedTime - this._product.timeleft) % this._product.vitesse;
+        this._product.timeleft = this._product.vitesse - remainingTime;
+        if (this._product.timeleft === 0) {
+          this._product.timeleft = this._product.vitesse;
 
-      moneyMade += productionCount * this._product.revenu * this._product.quantite *
-        (1 + this._world.activeangels * (this._world.angelbonus / 100));
+        }
+      } else {
 
-      this._product.timeleft = this._product.vitesse - remainingTime;
-    } else {
-      if (this._product.timeleft > 0) {
         if (this._product.timeleft <= elapsedTime) {
-          moneyMade += this._product.revenu * this._product.quantite *
-            (1 + this._world.activeangels * (this._world.angelbonus / 100));
+          moneyMade += this._product.revenu * this._product.quantite * (1 + this._world.activeangels * (this._world.angelbonus / 100));
           this._product.timeleft = 0;
         } else {
           this._product.timeleft -= elapsedTime;
+
         }
       }
     }
-
+    this._product.lastupdate = currentTime;
     if (moneyMade > 0) {
-      this._world.lastupdate = currentTime;
-      this.notifyProduction.emit({ p: this._product, qt: moneyMade });
+      this.notifyProduction.emit({p: this._product, qt: moneyMade});
     }
-
-    this._product.progress = 1 - (this._product.timeleft / this._product.vitesse);
-    this._product.totalTime = this._product.vitesse;
   }
 
+ 
   calcMaxCanBuy(): number {
-    if (!this._product || !this._world.money) return 0;
-    const { cout, croissance } = this._product;
+    if (!this._product || !this._world.money) {return 0};
+    const cout = this._product.cout;
+    const croissance = this._product.croissance;
     const money = this._world.money;
     return Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
   }
-
-  // product.component.ts
-@Input() multiplier: number = 1;
-
-buyProduct() {
-  let quantity = this.multiplier;
-  if (quantity === -1) quantity = this.calcMaxCanBuy();
   
-  const cost = this.calculateTotalCost(quantity);
-  if (cost <= this._world.money) {
-    this.onBuy.emit(cost);
-    this.updateCost(quantity);
-    this._product.quantite += quantity;
-    this.calcMaxCanBuy(); // Force le recalcul
-  }
+
+@Input() 
+set multiplier(value: number) {
+  this._multiplier = value;
+  if (this._multiplier && this._product) this.calcMaxCanBuy();
 }
 
+buyProduct() {
   
+  let quantity = this._multiplier;
 
-  calculateTotalCost(quantite: number): number {
-    const { cout, croissance } = this._product;
-    return cout * ((1 - Math.pow(croissance, quantite)) / (1 - croissance));
+    if (this._multiplier === -1) quantity = this.calcMaxCanBuy();
+
+    console.log(quantity)
+    const cost = this.calculateTotalCost(quantity);
+
+    if (cost > this._world.money) {
+      console.log("Pas assez d'argent !");
+      return;
+    }   
+
+    if (cost <= this._world.money) {
+      this.service.acheterQtProduit(this._world.name, this._product, quantity).then(r => {
+        this.onBuy.emit(cost);
+        this.updateCost(quantity);
+        this._product.quantite += quantity;
+        this.checkUnlocks(this._world, this._product);
+      });
+    }
+
+
   }
+
+checkUnlocks(world: World, product: Product) {
+  this.checkProductUnlocks(world, product);
+  this.checkAllUnlocks(world);
+}
+
+checkProductUnlocks(world: World, product: Product) {
+  product.paliers.forEach(palier => {
+    if (!palier.unlocked && product.quantite >= palier.seuil) {
+      palier.unlocked = true;
+      this.service.applyBonus(world, palier);
+    }
+  });
+}
+
+checkAllUnlocks(world: World) {
+  let productQuantityTotal = 0;
+  world.products.forEach(product => {
+    productQuantityTotal += product.quantite;
+  })
+  world.allunlocks.forEach(palier => {
+    if (!palier.unlocked && productQuantityTotal >= palier.seuil) {
+      palier.unlocked = true;
+      this.service.applyBonus(world, palier);
+    }
+  });
+}
+
+calculateTotalCost(quantite: number): number {
+  const cout = this._product.cout;
+  const croissance = this._product.croissance;
+  return cout * ((1 - Math.pow(croissance, quantite)) / (1 - croissance))
+}
 
   updateCost(quantite: number) {
     this._product.cout *= Math.pow(this._product.croissance, quantite);
   }
 
   startFabrication() {
-    if (!this._product.managerUnlocked && this._product.timeleft == 0) {
-      this._product.timeleft = this._product.vitesse;
+    if (this._product.timeleft == 0) {
+      this.service.lancerProduction(this._world.name, this._product).then(r => {
+        this._product.timeleft = this._product.vitesse;
+        this.run = true;
+        setTimeout(() => {
+          this.run = false;
+        }, 10);
+      });
     }
   }
-
-  trackByFn(index: number, product: Product) {
-    return product.id;
+  // barre progression
+  progressbarvalue=0;
+  initialValue = 0
+  run = false
+  vitesse: number = 0
+  orientation = Orientation.horizontal
+  setProgress(value: number) {
+    if (value >= 0 && value <= 100) {
+      this.progressbarvalue = value;
+    } else if (value < 0) {
+      this.progressbarvalue = 0;
+    } else {
+      this.progressbarvalue = 100;
+    }
   }
+  
+  
+  trackByFn(index: number, product: Product) {
+    return product?.id ?? index;
+  }
+  
 }

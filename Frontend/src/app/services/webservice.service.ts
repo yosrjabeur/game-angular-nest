@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Client, fetchExchange } from '@urql/core';
 import { ACHETER_ANGEL_UPGRADE, ACHETER_CASH_UPGRADE, ACHETER_PRODUIT, ENGAGER_MANAGER, GET_WORLD, LANCER_PRODUCTION, RESET_WORLD } from '../../Graphrequests';
 import { Product } from '../models/product';
+<<<<<<< HEAD
+=======
+import { World } from '../models/world';
+>>>>>>> b59708de4c0c1a9d13eda48f84c330e2af4658ad
 import { Palier } from '../models/palier';
 @Injectable({
   providedIn: 'root'
@@ -64,6 +68,39 @@ export class WebserviceService {
     return await this.createClient().mutation(RESET_WORLD, {
       user
     }).toPromise();
+  }
+
+  applyBonus(world: World, palier: Palier) {
+    if (palier.idcible > 0) {
+      let product = world.products.find((p) => p.id === palier.idcible);
+      if (!product) {
+        throw new Error(`Le produit avec l'id ${palier.idcible} n'existe pas`);
+      }
+      this.applyBonusForProduct(world, product, palier);
+    }
+
+    if (palier.idcible === 0) {
+      world.products.forEach(product => {
+        this.applyBonusForProduct(world, product, palier);
+      });
+    }
+
+    if (palier.idcible === -1) {
+      world.angelbonus += palier.ratio;
+    }
+  }
+  applyBonusForProduct(world: World, product: Product, palier: Palier) {
+    switch (palier.typeratio) {
+      case "gain":
+        product.revenu *= palier.ratio;
+        break;
+      case "vitesse":
+        product.vitesse /= palier.ratio;
+        break;
+      case "ange":
+        world.angelbonus += palier.ratio;
+        break;
+    }
   }
   constructor() {
   }
