@@ -19,11 +19,15 @@ export class WebserviceService {
   }
 
   async getWorld(user: string) {
-    const response = await this.createClient().query(GET_WORLD, {"user": user}).toPromise();
-    console.log('Response:', response);
-    return response;
+    try {
+      const response = await this.createClient().query(GET_WORLD, {"user": user}).toPromise();
+      console.log('Response:', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching world data:', error);
+      throw error;
+    }
   }
-
   async lancerProduction(user: string, product: Product) {
     return await this.createClient().mutation(LANCER_PRODUCTION, {
       user: user,
@@ -47,17 +51,17 @@ export class WebserviceService {
     }).toPromise();
   }
 
-  async acheterCashUpgrade(user: string, id: number) {
+  async acheterCashUpgrade(user: string, upgrade: Palier) {
     return await this.createClient().mutation(ACHETER_CASH_UPGRADE, {
       user,
-      id
+      upgrade
     }).toPromise();
   }
 
-  async acheterAngelUpgrade(user: string, id: number) {
+  async acheterAngelUpgrade(user: string, upgrade: Palier) {
     return await this.createClient().mutation(ACHETER_ANGEL_UPGRADE, {
       user,
-      id
+      upgrade
     }).toPromise();
   }
 

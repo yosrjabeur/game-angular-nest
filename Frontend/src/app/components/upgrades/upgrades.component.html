@@ -1,1 +1,20 @@
-<p>upgrades works!</p>
+<div class="upgrades-content" *ngIf="selectedCategory === 'cash' && world?.upgrades">
+    <mat-card *ngFor="let upgrade of world.upgrades" class="upgrade-card">
+      <div class="upgrade-image">
+        <img [src]="server + upgrade?.logo" alt="logo">
+      </div>
+      <mat-card-content>
+        <h3>{{ upgrade?.name }}</h3>
+        <p>Boost: {{ world.products[upgrade.idcible - 1].name }} profits x {{ upgrade.ratio }}</p>
+        <p>Price: {{ upgrade?.seuil }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button *ngIf="world" mat-raised-button color="primary" 
+                (click)="buyUpgrade(upgrade)"
+                [disabled]="world.money < upgrade.seuil">
+            Buy
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  

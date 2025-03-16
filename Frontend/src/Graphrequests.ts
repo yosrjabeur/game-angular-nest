@@ -1,6 +1,4 @@
 import {gql} from "@urql/core";
-
-
 const GET_WORLD = gql`
   query getWorld($user: String!) {
     getWorld(user: $user) {

@@ -144,3 +144,19 @@ html, body {
   height: 100%;
 }
 
+.snackbar-success {
+  background-color: #4caf50;
+  color: white;
+}
+.snackbar-error {
+  background-color: #f44336;
+  color: white;
+}
+.snackbar-warning {
+  background-color: #ff9800;
+  color: white;
+}
+.snackbar-info {
+  background-color: #2196f3;
+  color: white;
+}
