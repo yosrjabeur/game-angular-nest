@@ -5,14 +5,9 @@ import { Product } from '../../models/product';
 import { SideBarComponent } from "../side-bar/side-bar.component";
 import { ProductComponent } from "../product/product.component";
 import { CommonModule, DecimalPipe } from '@angular/common';
-<<<<<<< HEAD
 import { MatBadgeModule } from '@angular/material/badge';
 import { ManagerComponent } from "../manager/manager.component";
 import { MatSnackBar } from '@angular/material/snack-bar';
-=======
-import { MatBadgeModule } from '@angular/material/badge';  
-
->>>>>>> ea3ce6f10aec59dc8f1c0576f20bac6e61df8777
 @Component({
   selector: 'app-home',
   imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent],
@@ -26,13 +21,9 @@ export class HomeComponent {
   server: string;
   world: World = new World();
   product: Product = new Product();
-<<<<<<< HEAD
   showManagers: boolean = false;
   badgeManagers: number = 0;
   constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
-=======
-  constructor(private service: WebserviceService, private cdRef: ChangeDetectorRef) {
->>>>>>> ea3ce6f10aec59dc8f1c0576f20bac6e61df8777
     this.server= service.server
     service.getWorld(this.service.user).then(
       world => {
@@ -41,7 +32,6 @@ export class HomeComponent {
       });
     
   }
-<<<<<<< HEAD
   ngOnInit(): void {
     this.calculateBadgeManagers();
   }
@@ -62,10 +52,6 @@ export class HomeComponent {
   // Lorsque l'argent change, on met à jour le badge
   onMoneyChange() {
     this.calculateBadgeManagers();
-=======
-  ngOnInit() {
-    this.cdRef.detectChanges(); // Détecte les changements après la mise à jour
->>>>>>> ea3ce6f10aec59dc8f1c0576f20bac6e61df8777
   }
   onProductionDone($event: { p: Product; qt: number }) {
     let moneyMade = $event.qt
@@ -93,7 +79,7 @@ export class HomeComponent {
       this.multiplier = 1;
       this.multiplierLabel = 'BUY x1';
     }
-    this.cdRef.detectChanges(); 
+    //this.cdRef.detectChanges(); 
   }
   
   calcMaxCanBuy(): number {
@@ -111,6 +97,6 @@ export class HomeComponent {
   
     updateCost(quantite: number) {
       this.product.cout *= Math.pow(this.product.croissance, quantite);
-      this.cdRef.detectChanges(); 
+      //this.cdRef.detectChanges(); 
     }
 }
