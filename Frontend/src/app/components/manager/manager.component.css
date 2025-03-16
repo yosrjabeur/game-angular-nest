@@ -12,8 +12,8 @@
 
 /* Rectangle centré */
 .managers-container {
-    width: 80%;
-    max-width: 750px;
+    width: 90%; /* Plus large, ajusté à 90% */
+    max-width: 900px; /* Augmente la taille maximale */
     background: rgba(30, 30, 30, 0.95); /* Fond foncé avec transparence */
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -21,6 +21,8 @@
     text-align: center;
     font-family: 'Arial', sans-serif;
     color: white;
+    max-height: 80vh; /* Limite la hauteur du popup */
+    overflow-y: auto; /* Ajoute le scroll si nécessaire */
 }
 
 /* Header avec "MANAGERS" et "X" alignés */
@@ -41,10 +43,12 @@
 .close-btn {
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 30px; /* Plus grand pour une meilleure visibilité */
     color: white;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
+    padding: 0;
+    margin: 0;
 }
 
 .close-btn:hover {
@@ -64,6 +68,9 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    max-height: 300px; /* Limite la hauteur de la liste */
+    overflow-y: auto; /* Ajoute un scroll si la liste est trop longue */
+    padding-right: 15px; /* Espace pour scrollbar */
 }
 
 /* Cartes des managers */
@@ -144,30 +151,31 @@
         padding-left: 0;
     }
 }
-  .modal {
+
+.modal {
     transition: opacity 0.5s ease-in-out;
-  }
-  
-  .modal.ng-enter {
+}
+
+.modal.ng-enter {
     opacity: 0;
-  }
-  
-  .modal.ng-enter-active {
+}
+
+.modal.ng-enter-active {
     opacity: 1;
-  }
-  
-  .modal.ng-leave {
+}
+
+.modal.ng-leave {
     opacity: 1;
-  }
-  
-  .modal.ng-leave-active {
+}
+
+.modal.ng-leave-active {
     opacity: 0;
-  }
-  .no-managers-message {
+}
+
+.no-managers-message {
     font-size: 16px;
     color: #ff0000; /* Rouge pour attirer l'attention */
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
-  }
-  
+}

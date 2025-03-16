@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   styleUrl: './side-bar.component.css'
 })
 export class SideBarComponent {
+  @Output() showManagersEvent = new EventEmitter<void>(); // Événement pour afficher les managers
+
   constructor(private router: Router) {}
   Upgrades() {
     
@@ -15,7 +17,7 @@ export class SideBarComponent {
    }
    Managers() {
  
-     this.router.navigate(['/managers'])
+    this.showManagersEvent.emit();
    }
    Investors() {
 

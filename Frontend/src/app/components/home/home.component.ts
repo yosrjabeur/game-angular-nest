@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-
 export class HomeComponent {
   multiplier: number = 1;
   multiplierLabel: string = 'BUY x1';
@@ -28,7 +27,6 @@ export class HomeComponent {
     service.getWorld(this.service.user).then(
       world => {
         this.world = world.data.getWorld;
-        this.calculateBadgeManagers();
       });
     
   }
@@ -99,4 +97,8 @@ export class HomeComponent {
       this.product.cout *= Math.pow(this.product.croissance, quantite);
       //this.cdRef.detectChanges(); 
     }
+    // Méthode pour afficher ou cacher la fenêtre des managers
+  toggleManagers() {
+    this.showManagers = !this.showManagers;
+  }
 }
