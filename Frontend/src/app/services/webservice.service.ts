@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Client, fetchExchange } from '@urql/core';
 import { ACHETER_ANGEL_UPGRADE, ACHETER_CASH_UPGRADE, ACHETER_PRODUIT, ENGAGER_MANAGER, GET_WORLD, LANCER_PRODUCTION, RESET_WORLD } from '../../Graphrequests';
 import { Product } from '../models/product';
-<<<<<<< HEAD
-=======
 import { World } from '../models/world';
->>>>>>> b59708de4c0c1a9d13eda48f84c330e2af4658ad
 import { Palier } from '../models/palier';
 @Injectable({
   providedIn: 'root'

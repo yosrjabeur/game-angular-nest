@@ -5,7 +5,7 @@ import { Product } from '../../models/product';
 import { SideBarComponent } from "../side-bar/side-bar.component";
 import { ProductComponent } from "../product/product.component";
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { MatBadgeModule } from '@angular/material/badge';  // Importer MatBadgeModule
+import { MatBadgeModule } from '@angular/material/badge';  
 
 @Component({
   selector: 'app-home',
