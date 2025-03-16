@@ -14,7 +14,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-
 export class HomeComponent {
   multiplier: number = 1;
   multiplierLabel: string = 'BUY x1';
@@ -28,7 +27,6 @@ export class HomeComponent {
     service.getWorld(this.service.user).then(
       world => {
         this.world = world.data.getWorld;
-        this.calculateBadgeManagers();
       });
     
   }
