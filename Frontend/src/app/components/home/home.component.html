@@ -12,11 +12,11 @@
       
       <div class="buy_controls">
         <div class="buy_icon" (click)="onMultiplierChange()">
-          <i class="fa-solid fa-tags fa-rotate-by" style="--fa-rotate-angle: 314deg;">
-            <span>{{ multiplierLabel }}</span>
-          </i>
+<span>Buy x {{ multiplier === -1 ? calcMaxCanBuy() : multiplier }}</span>
         </div>
       </div>
+      
+      
     </div>
 
     <!-- Products Grid -->

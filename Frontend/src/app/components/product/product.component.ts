@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Product } from '../../models/product';
 import { World } from '../../models/world';
 import { WebserviceService } from '../../services/webservice.service';
@@ -18,13 +18,20 @@ export class ProductComponent implements OnInit {
   _multiplier = 1;
   server: string;
   qtX = 'X1';
-
+  
   constructor(private service: WebserviceService, private cdRef: ChangeDetectorRef,) {
     this.server = service.server;
   }
 
   ngOnInit(): void {
     setInterval(() => this.updateScore(), 100); // Update every 100ms for smoother gameplay
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['_product']) {
+      console.log("Produit mis à jour : ", this._product);
+      this.cdRef.detectChanges(); // Assurez-vous que les changements sont propagés
+    }
   }
 
   updateScore() {
@@ -99,6 +106,7 @@ set world(value: World) {
     const money = this._world.money;
     return Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
   }
+
   
 
 @Input() 
@@ -108,30 +116,29 @@ set multiplier(value: number) {
 }
 
 buyProduct() {
-  
-  let quantity = this._multiplier;
+  let quantity = this._multiplier === -1 ? this.calcMaxCanBuy() : this._multiplier;
+  const cost = this.calculateTotalCost(quantity);
 
-    if (this._multiplier === -1) quantity = this.calcMaxCanBuy();
-
-    console.log(quantity)
-    const cost = this.calculateTotalCost(quantity);
-
-    if (cost > this._world.money) {
-      console.log("Pas assez d'argent !");
-      return;
-    }   
-
-    if (cost <= this._world.money) {
-      this.service.acheterQtProduit(this._world.name, this._product, quantity).then(r => {
-        this.onBuy.emit(cost);
-        this.updateCost(quantity);
-        this._product.quantite += quantity;
-        this.checkUnlocks(this._world, this._product);
-      });
-    }
-
-
+  if (cost > this._world.money) {
+    console.log("Pas assez d'argent !");
+    return;
   }
+
+  // Appeler l'API pour acheter les produits
+  this.service.acheterQtProduit(this._world.name, this._product, quantity).then(() => {
+    this.onBuy.emit(cost);
+    // Mise à jour du prix du produit après achat
+    this.updateCost(quantity);
+
+    console.log("Après achat, coût du produit : ", this._product.cout); 
+
+    // Augmenter la quantité du produit acheté
+    this._product.quantite += quantity;
+    // Vérifier les unlocks après l'achat
+    this.checkUnlocks(this._world, this._product);
+  });
+}
+
 
 checkUnlocks(world: World, product: Product) {
   this.checkProductUnlocks(world, product);
@@ -168,6 +175,8 @@ calculateTotalCost(quantite: number): number {
 
   updateCost(quantite: number) {
     this._product.cout *= Math.pow(this._product.croissance, quantite);
+    console.log('Nouveau coût du produit :', this._product.cout);
+    this.cdRef.detectChanges(); 
   }
 
   startFabrication() {
@@ -200,6 +209,5 @@ calculateTotalCost(quantite: number): number {
   
   trackByFn(index: number, product: Product) {
     return product?.id ?? index;
-  }
-  
+  } 
 }

@@ -1,6 +1,6 @@
 /* Définir le style pour le fond d'écran */
 .background-container {
-    background-image: url('/assets/images/background.jpg');
+    background-image: url('/assets/images/home.jpg');
     background-size: cover; /* Pour couvrir toute la zone */
     background-position: center; /* Pour centrer l'image */
     height: 100vh; /* Prendre toute la hauteur de la vue */
