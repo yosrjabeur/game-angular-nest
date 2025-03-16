@@ -4,8 +4,6 @@ import { World } from '../../models/world';
 import { Palier } from '../../models/palier';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { GET_WORLD } from '../../../Graphrequests';
-
 @Component({
   selector: 'app-manager',
   imports: [CommonModule,MatSnackBarModule],
@@ -13,58 +11,56 @@ import { GET_WORLD } from '../../../Graphrequests';
   styleUrl: './manager.component.css'
 })
 export class ManagerComponent  {
-  @Output() modalClosed = new EventEmitter<void>();
-  _world: World = new World(); // Assurez-vous que World est correctement initialisé
-  server: string;
-  showManagers: boolean = true;
-
-  @Input()
-  set world(value: World) {
-    this._world = value ?? new World(); 
-    
-  }
+   world: World = new World(); 
+   server: string;
+   showManagers: boolean = false;
   constructor(private service: WebserviceService, private snackBar: MatSnackBar) {
     this.server = service.server;
-    console.log('Données reçues:', {
-      managers: this._world.managers,
-      products: this._world.products
-    });
   }
-  // Dans hireManager()
-hireManager(manager: Palier) {
-  // Utilisez _world partout
-  const targetManager = this._world.managers.find((m) => m.name === manager.name);
-
-  if (targetManager && !targetManager.unlocked && this._world.money >= targetManager.seuil) {
-    this.service.engagerManager(this._world.name, targetManager).then((response) => {
-      this._world.money -= targetManager.seuil;
-      targetManager.unlocked = true;
-      this._world.products[targetManager.idcible - 1].managerUnlocked = true;
-      // ...
-    });
-  }
+  @Input()
+set wor(value: World) {
+  console.log("Received world object:", value);  // Vérifier l'objet world
+  this.world = value;
+  console.log("Managers:", this.world.managers); // Vérifier si managers existe
 }
-  createClient() {
-    throw new Error('Method not implemented.');
+  // Getter to check if all managers are unlocked
+  get allManagersUnlocked(): boolean {
+    return this.world?.managers?.every(manager => manager.unlocked) ?? false;
   }
 
-// Dans startProductionForManager()
-startProductionForManager(manager: Palier) {
-  const product = this._world.products[manager.idcible - 1];
-  if (!product.managerUnlocked) {
-    this.service.lancerProduction(this._world.name, product);
-  }
-}
-
-  popMessage(message: string): void {
-    this.snackBar.open(message, "", { duration: 2000 });
-  }
-
-  closeModal() {
-    this.modalClosed.emit();
-    this.showManagers = false; // Ferme le modal
-  }
-
-}
+  hireManager(manager: Palier) {
+    let targetManager = this.world.managers.find((m) => m.name === manager.name);
+    if (!targetManager) {
+      // Manager introuvable, sortie de la fonction
+      this.snackBar.open("Manager not found!", 'Close', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+      return;
+    }
   
-
+    if (this.world.money >= targetManager.seuil) {
+      this.service.engagerManager(this.world.name, targetManager).then((response) => {
+        this.world.money -= targetManager.seuil;
+        targetManager.unlocked = true;
+        this.world.products[targetManager.idcible - 1].managerUnlocked = true;
+  
+        // Affichage de la notification
+        this.snackBar.open(`${manager.name} has been hired!`, 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+      }).catch(error => {
+        this.snackBar.open(`Error hiring ${manager.name}`, 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error']
+        });
+      });
+    } else {
+      this.snackBar.open("Not enough money to hire this manager!", "Close", {
+        duration: 3000,
+        panelClass: ['snackbar-warning']
+      });
+    }
+  }
+}

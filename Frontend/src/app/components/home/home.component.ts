@@ -5,11 +5,12 @@ import { Product } from '../../models/product';
 import { SideBarComponent } from "../side-bar/side-bar.component";
 import { ProductComponent } from "../product/product.component";
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { MatBadgeModule } from '@angular/material/badge';  // Importer MatBadgeModule
-
+import { MatBadgeModule } from '@angular/material/badge';
+import { ManagerComponent } from "../manager/manager.component";
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-home',
-  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule],
+  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -21,20 +22,31 @@ export class HomeComponent implements OnInit {
   product: Product = new Product();
   showManagers: boolean = false;
   badgeManagers: number = 0;
-  constructor(private service: WebserviceService) {
+  constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
     this.server= service.server
     service.getWorld(this.service.user).then(
       world => {
         this.world = world.data.getWorld;
+        this.calculateBadgeManagers();
       });
   }
   ngOnInit(): void {
     this.calculateBadgeManagers();
   }
-  // Calculer le nombre de managers accessibles
   calculateBadgeManagers() {
+    const oldCount = this.badgeManagers;
+    // On compte les managers qui ne sont pas débloqués et sont abordables
     this.badgeManagers = this.world.managers.filter(m => !m.unlocked && this.world.money >= m.seuil).length;
+  
+    // Si un manager devient disponible, on affiche une notification
+    if (this.badgeManagers > oldCount) {
+      this.snackBar.open("New manager available!", "Close", {
+        duration: 3000,
+        panelClass: ['snackbar-info']
+      });
+    }
   }
+  
   // Lorsque l'argent change, on met à jour le badge
   onMoneyChange() {
     this.calculateBadgeManagers();

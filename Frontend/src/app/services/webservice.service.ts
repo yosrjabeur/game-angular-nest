@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { Client, fetchExchange } from '@urql/core';
 import { ACHETER_ANGEL_UPGRADE, ACHETER_CASH_UPGRADE, ACHETER_PRODUIT, ENGAGER_MANAGER, GET_WORLD, LANCER_PRODUCTION, RESET_WORLD } from '../../Graphrequests';
 import { Product } from '../models/product';
-<<<<<<< HEAD
-=======
 import { World } from '../models/world';
->>>>>>> b59708de4c0c1a9d13eda48f84c330e2af4658ad
 import { Palier } from '../models/palier';
 @Injectable({
   providedIn: 'root'
@@ -22,11 +19,15 @@ export class WebserviceService {
   }
 
   async getWorld(user: string) {
-    const response = await this.createClient().query(GET_WORLD, {"user": user}).toPromise();
-    console.log('Response:', response);
-    return response;
+    try {
+      const response = await this.createClient().query(GET_WORLD, {"user": user}).toPromise();
+      console.log('Response:', response);
+      return response;
+    } catch (error) {
+      console.error('Error fetching world data:', error);
+      throw error;
+    }
   }
-
   async lancerProduction(user: string, product: Product) {
     return await this.createClient().mutation(LANCER_PRODUCTION, {
       user: user,
@@ -50,17 +51,17 @@ export class WebserviceService {
     }).toPromise();
   }
 
-  async acheterCashUpgrade(user: string, id: number) {
+  async acheterCashUpgrade(user: string, upgrade: Palier) {
     return await this.createClient().mutation(ACHETER_CASH_UPGRADE, {
       user,
-      id
+      upgrade
     }).toPromise();
   }
 
-  async acheterAngelUpgrade(user: string, id: number) {
+  async acheterAngelUpgrade(user: string, upgrade: Palier) {
     return await this.createClient().mutation(ACHETER_ANGEL_UPGRADE, {
       user,
-      id
+      upgrade
     }).toPromise();
   }
 

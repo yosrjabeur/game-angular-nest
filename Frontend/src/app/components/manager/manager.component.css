@@ -1,80 +1,173 @@
-.managers-page {
-    font-family: 'Arial', sans-serif;
-    max-width: 900px;
-    margin: auto;
+/* Fond qui couvre toute l'interface */
+.background-container {
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Rectangle centré */
+.managers-container {
+    width: 80%;
+    max-width: 750px;
+    background: rgba(30, 30, 30, 0.95); /* Fond foncé avec transparence */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     padding: 20px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .page-header {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: white;
+}
+
+/* Header avec "MANAGERS" et "X" alignés */
+.managers-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background: #007bff;
+    background: linear-gradient(45deg, #ff6b00, #7a00ff);
+    padding: 15px;
+    border-radius: 12px 12px 0 0;
+    font-size: 24px;
+    font-weight: bold;
     color: white;
-    border-radius: 5px;
-  }
-  
-  .title {
-    font-size: 20px;
-  }
-  
-  .close-btn {
-    background: transparent;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Bouton de fermeture */
+.close-btn {
+    background: none;
     border: none;
+    font-size: 24px;
     color: white;
-    font-size: 20px;
     cursor: pointer;
-  }
-  
-  .description {
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .managers-list {
+    transition: transform 0.2s ease-in-out;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+    color: #00ff00; /* Vert pour l'effet gaming */
+}
+
+/* Description */
+.managers-description {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #ddd;
+}
+
+/* Liste des managers */
+.managers-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
-  }
-  
-  .manager-card {
+}
+
+/* Cartes des managers */
+.manager-card {
     display: flex;
     align-items: center;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .manager-image {
-    width: 80px;
-    height: 80px;
+    background: #222;
+    border: 2px solid #7a00ff;
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    box-shadow: 2px 2px 8px rgba(122, 0, 255, 0.5);
+    transition: transform 0.2s ease-in-out;
+}
+
+.manager-card:hover {
+    transform: scale(1.03);
+}
+
+/* Image des managers */
+.manager-img img {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-  }
-  
-  .manager-info {
+    border: 3px solid #ff6b00;
+    background: #eee;
+}
+
+/* Infos du manager */
+.manager-info {
     flex: 1;
-    padding: 0 15px;
-  }
-  
-  .hire-btn {
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    background: grey;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.manager-info h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00ff00;
+}
+
+.manager-info p {
+    font-size: 14px;
+    color: #ccc;
+}
+
+/* Bouton */
+.manager-action button {
+    background: #ff6b00;
+    border: 2px solid #a87442;
     color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+    text-shadow: 1px 1px 1px #000;
+}
+
+.manager-action button:hover {
+    background: #c48752;
+    transform: scale(1.05);
+}
+
+.manager-action button:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .manager-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .manager-info {
+        padding-left: 0;
+    }
+}
+  .modal {
+    transition: opacity 0.5s ease-in-out;
   }
   
-  .hire-btn.affordable {
-    background: #28a745;
+  .modal.ng-enter {
+    opacity: 0;
   }
   
-  .hire-btn.affordable:hover {
-    background: #218838;
+  .modal.ng-enter-active {
+    opacity: 1;
+  }
+  
+  .modal.ng-leave {
+    opacity: 1;
+  }
+  
+  .modal.ng-leave-active {
+    opacity: 0;
+  }
+  .no-managers-message {
+    font-size: 16px;
+    color: #ff0000; /* Rouge pour attirer l'attention */
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
   }
   

@@ -3,7 +3,6 @@
   
   <div class="main_content">
     <div class="home" style="background-image: url('assets/images/home.jpg');"></div>
-    
     <!-- Header -->
     <div class="header">
       <div class="money_display">
@@ -18,7 +17,13 @@
         </div>
       </div>
     </div>
-
+ <!-- Bouton Managers avec badge -->
+ <button mat-button [matBadge]="badgeManagers" matBadgeColor="warn" (click)="showManagers = true">
+  Managers
+</button>
+</div>
+<!-- Fenêtre des Managers -->
+<app-manager *ngIf="showManagers" [wor]="world" (close)="showManagers = false"></app-manager>
     <!-- Products Grid -->
     <div class="products_container" *ngIf="world?.products">
       <div class="products_grid">
@@ -34,11 +39,4 @@
       </div>
     </div>
   </div>
-  <button mat-raised-button
-        color="primary"
-        [matBadge]="badgeManagers"
-        [matBadgeHidden]="badgeManagers === 0"
-        (click)="showManagers = !showManagers">
-  Managers
-</button>
-</div>
+
