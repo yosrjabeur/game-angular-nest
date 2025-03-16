@@ -17,6 +17,16 @@
       </div>
     </div>
 
+    <!-- Bouton Managers avec badge -->
+    <!--<button mat-button [matBadge]="badgeManagers" matBadgeColor="warn" (click)="toggleManagers()">
+      Managers
+    </button>-->
+
+    <!-- Fenêtre des Managers -->
+    <div *ngIf="showManagers" class="manager-popup">
+      <app-manager [wor]="world" (close)="showManagers = false"></app-manager>
+    </div>
+    
     <!-- Products Grid -->
     <div class="products_container" *ngIf="world?.products">
       <div class="products_grid">
@@ -32,11 +42,4 @@
       </div>
     </div>
   </div>
-  <button mat-raised-button
-        color="primary"
-        [matBadge]="badgeManagers"
-        [matBadgeHidden]="badgeManagers === 0"
-        (click)="showManagers = !showManagers">
-  Managers
-</button>
 </div>
