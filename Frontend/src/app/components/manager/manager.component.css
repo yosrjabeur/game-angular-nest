@@ -1,0 +1,80 @@
+.managers-page {
+    font-family: 'Arial', sans-serif;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .title {
+    font-size: 20px;
+  }
+  
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .description {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .managers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .manager-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .manager-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+  .manager-info {
+    flex: 1;
+    padding: 0 15px;
+  }
+  
+  .hire-btn {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background: grey;
+    color: white;
+  }
+  
+  .hire-btn.affordable {
+    background: #28a745;
+  }
+  
+  .hire-btn.affordable:hover {
+    background: #218838;
+  }
+  

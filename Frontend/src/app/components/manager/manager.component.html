@@ -1,1 +1,31 @@
-<p>hi</p>
+<div *ngIf="showManagers && _world && _world.managers.length > 0" class="modal">
+    <div><h1 class="title">Managers make you feel better !</h1></div>
+    <div *ngFor="let manager of _world.managers">
+      <div *ngIf="!manager.unlocked" class="managerslayout">
+        <div>
+          <div class="logo">
+            <img class="round" [src]="server + manager.logo" alt="logo" />
+          </div>
+        </div>
+        <div>
+          <div class="managername">{{ manager.name }}</div>
+          <div class="managercible">
+            <ng-container *ngIf="_world.products[manager.idcible - 1]; else noProduct">
+              {{ _world.products[manager.idcible - 1].name }}
+            </ng-container>
+            <ng-template #noProduct>No product available</ng-template>
+          </div>
+          <div class="managercost">{{ manager.seuil | number:'1.0-0' }}</div>
+        </div>
+        <div>
+          <div class="hirebutton"
+              [ngClass]="{'selectable': (_world.money >= manager.seuil), 'disabled': manager.unlocked}"
+              (click)="hireManager(manager)">
+            {{ manager.unlocked ? 'Hired!' : 'Hire' }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="closebutton" mat-raised-button color="primary" (click)="closeModal()">Close</button>
+  </div>
+  

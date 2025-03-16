@@ -109,3 +109,35 @@ li::before {
   border-radius: 50%;
   border: 2px solid white;
 }
+.nav-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.nav-buttons button {
+  background: white;
+  color: #00ff00;
+  font-size: 18px;
+  padding: 12px 25px;
+  border-radius: 5px;
+  width: 190px;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #00ff00;
+  box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.8);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  margin: 15px 0;
+  transform: skewX(-10deg);
+  cursor: pointer;
+}
+
+.nav-buttons button:hover {
+  box-shadow: 0px 0px 15px rgba(0, 255, 0, 1);
+}
+
+.nav-buttons button:active {
+  transform: skewX(-10deg) scale(1.1);
+}

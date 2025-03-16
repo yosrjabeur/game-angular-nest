@@ -5,10 +5,11 @@ import { Product } from '../../models/product';
 import { SideBarComponent } from "../side-bar/side-bar.component";
 import { ProductComponent } from "../product/product.component";
 import { CommonModule, DecimalPipe } from '@angular/common';
+import { MatBadgeModule } from '@angular/material/badge';  // Importer MatBadgeModule
 
 @Component({
   selector: 'app-home',
-  imports: [SideBarComponent, ProductComponent,DecimalPipe ,CommonModule,],
+  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
