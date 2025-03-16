@@ -97,4 +97,8 @@ export class HomeComponent {
       this.product.cout *= Math.pow(this.product.croissance, quantite);
       //this.cdRef.detectChanges(); 
     }
+    // Méthode pour afficher ou cacher la fenêtre des managers
+  toggleManagers() {
+    this.showManagers = !this.showManagers;
+  }
 }

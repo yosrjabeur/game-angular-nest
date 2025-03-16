@@ -1,5 +1,5 @@
 <div class="container">
-  <app-side-bar class="sidebar"></app-side-bar>
+  <app-side-bar class="sidebar" (showManagersEvent)="toggleManagers()"></app-side-bar>
   
   <div class="main_content">
     <div class="home" style="background-image: url('assets/images/home.jpg');"></div>
@@ -11,19 +11,21 @@
       
       <div class="buy_controls">
         <div class="buy_icon" (click)="onMultiplierChange()">
-<span>Buy x {{ multiplier === -1 ? calcMaxCanBuy() : multiplier }}</span>
+          <span>Buy x {{ multiplier === -1 ? calcMaxCanBuy() : multiplier }}</span>
         </div>
       </div>
-      
-      
     </div>
- <!-- Bouton Managers avec badge -->
- <button mat-button [matBadge]="badgeManagers" matBadgeColor="warn" (click)="showManagers = true">
-  Managers
-</button>
-</div>
-<!-- Fenêtre des Managers -->
-<app-manager *ngIf="showManagers" [wor]="world" (close)="showManagers = false"></app-manager>
+
+    <!-- Bouton Managers avec badge -->
+    <!--<button mat-button [matBadge]="badgeManagers" matBadgeColor="warn" (click)="toggleManagers()">
+      Managers
+    </button>-->
+
+    <!-- Fenêtre des Managers -->
+    <div *ngIf="showManagers" class="manager-popup">
+      <app-manager [wor]="world" (close)="showManagers = false"></app-manager>
+    </div>
+    
     <!-- Products Grid -->
     <div class="products_container" *ngIf="world?.products">
       <div class="products_grid">
@@ -39,4 +41,4 @@
       </div>
     </div>
   </div>
-
+</div>
