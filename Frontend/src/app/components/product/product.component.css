@@ -4,7 +4,8 @@
   background: linear-gradient(145deg, #6B5B4D, #5A4B3E);
   padding: 14px;
   border-radius: 16px;
-  width: 480px;
+  width: 450px; 
+  height: 100px; 
   justify-content: space-between;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease-in-out;
@@ -104,58 +105,73 @@
   text-align: center;
   font-weight: bold;
 }
+.progressbar-container {
+  width: 200px; 
+  max-width: 100%;
+  margin-top: 6px;
+}
 
+ /* empty product */
 .product_empty {
-  padding: 20px;
-  width: 460px;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: 16px;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  transition: all 0.2s ease-in-out;
+  width: 450px; 
+  height: 100px; 
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #f0e5dc, #d9c4b5);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease-in-out;
 }
 
 .product_empty:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: linear-gradient(145deg, #f5eee5, #e1d1c1);
   transform: scale(1.03);
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .empty_content {
   display: flex;
   align-items: center;
   width: 100%;
+  justify-content: space-evenly;
 }
 
 .empty_icon {
-  margin-right: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #B8B8B8, #8E8E8E);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  padding: 6px;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+}
+
+.empty_icon img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .empty_details {
   color: #3A322F;
   font-weight: bold;
-}
-.progressbar-container {
-  width: 200px; /* Ajuste la largeur selon ton besoin */
-  max-width: 100%;
-  margin-top: 6px;
+  text-align: center;
 }
 
-.empty_icon img {
-  width: 60px; /* Même largeur que .product_image img */
-  height: 60px; /* Même hauteur que .product_image img */
-  border-radius: 50%; /* Arrondi pour correspondre au style circulaire */
-  object-fit: cover; /* Assure que l'image s'adapte bien au conteneur */
+.empty_name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 10px; 
+  display: block; 
 }
-.empty_icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle, #B8B8B8, #8E8E8E); /* Même dégradé que .product_image */
-  border-radius: 50%; /* Arrondi pour correspondre au style circulaire */
-  width: 70px; /* Même largeur que .product_image */
-  height: 70px; /* Même hauteur que .product_image */
-  padding: 6px; /* Même padding que .product_image */
-  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); /* Même ombre portée */
+
+
+.empty_price {
+  font-size: 16px;
+  color: #8E44AD;
+  font-weight: bold;
 }

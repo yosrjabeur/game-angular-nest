@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import "https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css";
 
 .main_content {
@@ -65,3 +66,30 @@
   transform: scale(0.9);
   box-shadow: 0 0 10px rgba(255, 204, 0, 1);
 }
+=======
+/* Définir le style pour le fond d'écran */
+.background-container {
+    background-image: url('/assets/images/home.jpg');
+    background-size: cover; /* Pour couvrir toute la zone */
+    background-position: center; /* Pour centrer l'image */
+    height: 100vh; /* Prendre toute la hauteur de la vue */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Style pour le bouton Start */
+  .start-button {
+    padding: 15px 30px;
+    font-size: 20px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .start-button:hover {
+    background-color: #0056b3;
+  }
+>>>>>>> ea3ce6f10aec59dc8f1c0576f20bac6e61df8777
