@@ -10,12 +10,18 @@ import { Palier } from '../models/palier';
 export class WebserviceService {
   server = 'http://localhost:3000/';
   user = 'Yosr_Chadha';
-
+   audio: HTMLAudioElement;
+   private username: string = '';
   createClient() {
     return new Client({
       url: this.server + 'graphql',
       exchanges: [fetchExchange]
     });
+  }
+  constructor() {
+    this.audio = new Audio();
+    this.audio.src = 'assets/music.mp3'; // Remplace par le chemin de ta musique
+    this.audio.loop = true; // Pour que la musique tourne en boucle
   }
 
   async getWorld(user: string) {
@@ -103,6 +109,16 @@ export class WebserviceService {
         break;
     }
   }
-  constructor() {
+  playMusic() {
+    this.audio.play();
   }
+
+  stopMusic() {
+    this.audio.pause();
+    this.audio.currentTime = 0;
+  }
+  setUsername(username: string): void {
+    this.user = username; // Stocke le pseudo pour l'utiliser dans les requêtes
+  }
+  
 }

@@ -8,9 +8,10 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { MatBadgeModule } from '@angular/material/badge';
 import { ManagerComponent } from "../manager/manager.component";
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule, NgModel } from '@angular/forms';
 @Component({
   selector: 'app-home',
-  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent],
+  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent,FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -22,17 +23,29 @@ export class HomeComponent {
   product: Product = new Product();
   showManagers: boolean = false;
   badgeManagers: number = 0;
+  username: string = ''; // Ensure the username variable is defined and initialized
   constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
     this.server= service.server
     service.getWorld(this.service.user).then(
       world => {
         this.world = world.data.getWorld;
+        this.username = localStorage.getItem('username') || this.generateRandomUsername(); 
+        this.service.setUsername(this.username); // Synchronisation avec le service
+        service.getWorld(this.service.user).then(world => {
+          this.world = world.data.getWorld;
+        });
       });
     
   }
   ngOnInit(): void {
+    this.saveUsername(); // Assurez-vous que le pseudo est sauvegardé au chargement
     this.calculateBadgeManagers();
   }
+  saveUsername(): void {
+    localStorage.setItem('username', this.username);
+    this.service.setUsername(this.username);
+  }
+
   calculateBadgeManagers() {
     const oldCount = this.badgeManagers;
     // On compte les managers qui ne sont pas débloqués et sont abordables
@@ -101,4 +114,8 @@ export class HomeComponent {
   toggleManagers() {
     this.showManagers = !this.showManagers;
   }
+  generateRandomUsername(): string {
+    return 'Captain' + Math.floor(Math.random() * 10000);
+  }
+  
 }

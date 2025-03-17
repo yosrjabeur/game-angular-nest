@@ -1,1 +1,26 @@
-<p>unlocks works!</p>
+<div class="unlocks_page">
+    <div class="page_header">
+      <div class="title">
+        <h5>UNLOCKS</h5>
+      </div>
+      <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
+        <img class="close-btn-img" src="assets/close-btn.jpeg">
+      </button>
+    </div>
+    <div class="description">
+      <em>Want to maximize profit?</em>
+      <p>Look no further! Get your investmentsto these quotas to unlock sweet
+        <br>profit bonuses! Its Recursiveriffic!</p>
+    </div>
+    <div class="unlocks_list" >
+      <div class="unlocks_details" *ngFor="let unlock of world.products">
+        <div class="unlocks_name">{{unlock?.name}}</div>
+        <div class="unlocks_image_container">
+          <img class="unlocks_image" [attr.src]=server+unlock.paliers[unlock.id-1].logo  alt="logo"/>
+        </div>
+        <div class="unlocks_quantity">{{ unlock.quantite }}</div>
+        <div class="unlocks_profit"> {{unlock.paliers[unlock.id-1].name}}</div>
+  
+    </div>
+  </div>
+  </div>

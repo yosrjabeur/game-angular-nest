@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router'; // Importez Router depuis @angular/router
+import { WebserviceService } from '../../services/webservice.service';
 
 @Component({
   selector: 'app-start',
@@ -11,10 +12,10 @@ import { Router } from '@angular/router'; // Importez Router depuis @angular/rou
 export class StartComponent {
   backgroundUrl: string = 'assets/images/start.jpg'; //  Chemin dynamique de l’image
 
-  constructor(private router : Router) {
+  constructor(private router : Router,private service: WebserviceService) {
   }
-   Start() {
-    //naviguer vers home page 
-     this.router.navigate(['/home'])
-   }
+  onStartGame() {
+    this.service.playMusic(); // Joue la musique
+    this.router.navigate(['/home']); // Redirige vers l'interface principale
+  }
 }
