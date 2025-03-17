@@ -14,7 +14,6 @@ export class ManagerComponent  {
    world: World = new World(); 
    server: string;
    showManagers: boolean = false;
-   @Output() close = new EventEmitter<void>();  // Pour fermer la fenêtre popup
   constructor(private service: WebserviceService, private snackBar: MatSnackBar) {
     this.server = service.server;
   }
@@ -63,8 +62,5 @@ set wor(value: World) {
         panelClass: ['snackbar-warning']
       });
     }
-  }
-  onClose() {
-    this.close.emit();
   }
 }
