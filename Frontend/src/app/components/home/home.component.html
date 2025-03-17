@@ -2,14 +2,21 @@
   <app-side-bar class="sidebar" (showManagersEvent)="toggleManagers()"></app-side-bar>
   
   <div class="main_content">
+    <!-- Section d'Image de Fond -->
     <div class="home" style="background-image: url('assets/images/home.jpg');"></div>
     
-    <!-- Header -->
+    <!-- Header avec organisation de l'input -->
     <div class="header">
       <div class="money_display">
         $ {{ world.money | number:'1.0-0' }}
       </div>
-      
+
+      <!-- Zone de l'input pour username -->
+      <div class="username_input">
+        <input type="text" [(ngModel)]="username" (change)="saveUsername()" placeholder="Enter your username" />
+      </div>
+
+      <!-- Contrôles d'achat avec multiplier -->
       <div class="buy_controls">
         <div class="buy_icon" (click)="onMultiplierChange()">
           <span>Buy x {{ multiplier === -1 ? calcMaxCanBuy() : multiplier }}</span>
@@ -17,17 +24,12 @@
       </div>
     </div>
 
-    <!-- Bouton Managers avec badge -->
-    <!--<button mat-button [matBadge]="badgeManagers" matBadgeColor="warn" (click)="toggleManagers()">
-      Managers
-    </button>-->
-
     <!-- Fenêtre des Managers -->
     <div *ngIf="showManagers" class="manager-popup">
       <app-manager [wor]="world" (close)="showManagers = false"></app-manager>
     </div>
-    
-    <!-- Products Grid -->
+
+    <!-- Grille de produits -->
     <div class="products_container" *ngIf="world?.products">
       <div class="products_grid">
         <div class="product_column" *ngFor="let column of [0,1]">
