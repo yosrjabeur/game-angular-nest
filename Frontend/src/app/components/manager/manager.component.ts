@@ -20,6 +20,8 @@ export class ManagerComponent  {
   }
 
   @Output() productUpdated = new EventEmitter<Product>();
+  @Output() closeModal = new EventEmitter<void>(); // Nouvel événement pour fermer le modal
+  
   @Input() set wor(value: World) {
   console.log("Received world object:", value);  // Vérifier l'objet world
   this.world = value;
@@ -28,6 +30,11 @@ export class ManagerComponent  {
   // Getter to check if all managers are unlocked
   get allManagersUnlocked(): boolean {
     return this.world?.managers?.every(manager => manager.unlocked) ?? false;
+  }
+
+  // Nouvelle méthode pour fermer le modal
+  closeManagerModal() {
+    this.closeModal.emit();
   }
 
   hireManager(manager: Palier) {

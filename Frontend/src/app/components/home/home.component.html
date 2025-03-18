@@ -16,22 +16,26 @@
         </div>
       </div>
     </div>
-
+    
     <!-- Bouton Managers avec badge -->
     <!--<button mat-button [matBadge]="badgeManagers" matBadgeColor="warn" (click)="toggleManagers()">
       Managers
     </button>-->
-
+    
     <!-- Fenêtre des Managers -->
     <div *ngIf="showManagers" class="manager-popup">
-<!-- In the parent component template -->
-<app-manager [wor]="world" (productUpdated)="onProductUpdated($event)"></app-manager>    </div>
+      <app-manager 
+        [wor]="world" 
+        (productUpdated)="onProductUpdated($event)"
+        (closeModal)="toggleManagers()">
+      </app-manager>
+    </div>
     
     <!-- Products Grid -->
     <div class="products_container" *ngIf="world?.products">
       <div class="products_grid">
         <div class="product_column" *ngFor="let column of [0,1]">
-          <app-product *ngFor="let product of world.products.slice(column*3, (column+1)*3)" 
+          <app-product *ngFor="let product of world.products.slice(column*3, (column+1)*3)"
             [multiplier]="multiplier"
             [product]="product" 
             [world]="world"
