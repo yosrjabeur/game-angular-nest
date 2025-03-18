@@ -1,0 +1,126 @@
+.unlocks-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; /* Pop-up plus large */
+    background: linear-gradient(135deg, #6a0dad, #ff8c00, #32cd32);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    text-align: center;
+    color: white;
+  }
+  
+  .unlocks-container {
+    position: relative;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px;
+    border-radius: 12px;
+    max-height: 80vh; /* Empêche d’être trop long */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .close-btn:hover {
+    background: #ff0000;
+  }
+  
+  .page-header {
+    background: rgba(255, 140, 0, 0.9);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  .progress {
+    color: #32cd32;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  
+  .description p {
+    font-size: 16px;
+    color: #ccc;
+    margin: 10px 0;
+  }
+  
+  /* Scroll horizontal */
+  .unlocks-list {
+    display: flex;
+    gap: 15px;
+    padding-top: 10px;
+    overflow-x: auto; /* Permet le défilement horizontal */
+    white-space: nowrap;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #6a0dad #222;
+  }
+  
+  .unlocks-list::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .unlocks-list::-webkit-scrollbar-thumb {
+    background: #6a0dad;
+    border-radius: 5px;
+  }
+  
+  .unlock-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    width: 180px; /* Un peu plus large */
+    box-shadow: 0px 4px 10px rgba(255, 140, 0, 0.6);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+    display: inline-block;
+  }
+  
+  .unlock-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(255, 140, 0, 0.9);
+  }
+  
+  .unlock-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #6a0dad;
+    font-size: 16px;
+  }
+  
+  .unlock-image img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #32cd32;
+    background: white;
+  }
+  
+  .unlock-quantity,
+  .unlock-bonus {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #333;
+    font-weight: bold;
+  }
+  

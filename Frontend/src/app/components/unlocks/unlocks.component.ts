@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { World } from '../../models/world';
 import { WebserviceService } from '../../services/webservice.service';
 import { CommonModule } from '@angular/common';
@@ -10,13 +10,19 @@ import { CommonModule } from '@angular/common';
   styleUrl: './unlocks.component.css'
 })
 export class UnlocksComponent {
-  server : string
-  world: World =new World();
+  server: string;
+  world: World = new World();
+  @Output() close = new EventEmitter<void>(); // Événement pour fermer la pop-up
+
   constructor(private service: WebserviceService) {
-    this.server = service.server
+    this.server = service.server;
   }
+
   @Input()
-  set wor(value: World) {
+  set worldd(value: World) {
     this.world = value;
+  }
+  closeUnlocks() {
+    this.close.emit(); // Émet l'événement pour fermer la pop-up
   }
 }

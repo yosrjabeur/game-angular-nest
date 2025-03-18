@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { WebserviceService } from '../../services/webservice.service';
 import { World } from '../../models/world';
 
@@ -16,9 +16,10 @@ export class InvestorsComponent {
   world: World = new World();
 
   server: string;
+  @Output() close = new EventEmitter<void>(); // Événement pour fermer la pop-up
 
   @Input()
-  set wor(value: World) {
+  set worldd(value: World) {
     this.world = value;
   }
 
@@ -31,5 +32,8 @@ export class InvestorsComponent {
       this.world = response.data.resetWorld;
       window.location.reload();
     });
+  }
+  closeModal() {
+    this.close.emit(); // Émet l'événement pour fermer la pop-up
   }
 }

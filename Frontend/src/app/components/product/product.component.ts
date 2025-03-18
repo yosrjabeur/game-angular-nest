@@ -210,4 +210,5 @@ calculateTotalCost(quantite: number): number {
   trackByFn(index: number, product: Product) {
     return product?.id ?? index;
   } 
+  
 }

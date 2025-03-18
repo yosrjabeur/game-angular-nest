@@ -9,9 +9,12 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { ManagerComponent } from "../manager/manager.component";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule, NgModel } from '@angular/forms';
+import { UnlocksComponent } from "../unlocks/unlocks.component";
+import { UpgradesComponent } from "../upgrades/upgrades.component";
+import { InvestorsComponent } from "../investors/investors.component";
 @Component({
   selector: 'app-home',
-  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent,FormsModule],
+  imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent, FormsModule, UnlocksComponent, UpgradesComponent, InvestorsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -22,7 +25,11 @@ export class HomeComponent {
   world: World = new World();
   product: Product = new Product();
   showManagers: boolean = false;
+  showUnlocks: boolean = false; // Variable pour afficher le pop-up Unlocks
+  showUpgrades: boolean = false; // Variable pour afficher la pop-up Upgrades
+  showInvestors: boolean = false; // Variable pour afficher la pop-up Investors
   badgeManagers: number = 0;
+  badgeUpgrades: number = 0; // Compteur des upgrades achetables
   username: string = ''; // Ensure the username variable is defined and initialized
   constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
     this.server= service.server
@@ -38,14 +45,56 @@ export class HomeComponent {
     
   }
   ngOnInit(): void {
-    this.saveUsername(); // Assurez-vous que le pseudo est sauvegardé au chargement
-    this.calculateBadgeManagers();
-  }
-  saveUsername(): void {
+    const savedUsername = localStorage.getItem('username');
+
+  if (savedUsername) {
+    this.username = savedUsername;
+    this.service.setUsername(this.username);
+    this.loadUserWorld(); // Charge le monde lié à l'utilisateur
+  } else {
+    this.username = this.generateRandomUsername();
     localStorage.setItem('username', this.username);
     this.service.setUsername(this.username);
+    this.createNewWorld(); // Crée un nouveau monde pour ce nouvel utilisateur
   }
+    this.calculateBadgeManagers();
+  }
+  // Charger le monde d'un utilisateur existant
+loadUserWorld(): void {
+  const savedWorld = localStorage.getItem(`world_${this.username}`);
+  
+  if (savedWorld) {
+    this.world = JSON.parse(savedWorld);
+  } else {
+    // Si le monde n'existe pas, récupérer un nouveau monde depuis le backend
+    this.createNewWorld();
+  }
+}
 
+// Créer un nouveau monde et l'enregistrer pour un nouvel utilisateur
+createNewWorld(): void {
+  this.service.getWorld(this.service.user).then(world => {
+    this.world = world.data.getWorld;
+    localStorage.setItem(`world_${this.username}`, JSON.stringify(this.world));
+  });
+}
+saveUsername() {
+  if (this.username.trim()) {
+    localStorage.setItem('username', this.username);
+    this.service.setUsername(this.username);
+
+    // Charger un monde existant pour le nouvel utilisateur ou en créer un nouveau
+    this.service.getWorld(this.username).then(world => {
+      if (world.data.getWorld) {
+        this.world = world.data.getWorld; // Charger le monde existant
+      } else {
+        this.createNewWorld(); // Créer un nouveau monde
+      }
+    });
+  }
+}
+
+  
   calculateBadgeManagers() {
     const oldCount = this.badgeManagers;
     // On compte les managers qui ne sont pas débloqués et sont abordables
@@ -59,20 +108,39 @@ export class HomeComponent {
       });
     }
   }
-  
+  calculateBadgeUpgrades() {
+    const oldCount = this.badgeManagers;
+    this.badgeUpgrades = this.world.upgrades.filter(up => !up.unlocked && this.world.money >= up.seuil).length;
+   // Si un manager devient disponible, afficher une notification
+   if (this.badgeManagers > oldCount) {
+    this.snackBar.open("New manager available!", "Close", {
+      duration: 3000,
+      panelClass: ['snackbar-info']
+    });
+  }
+  }
+
   // Lorsque l'argent change, on met à jour le badge
   onMoneyChange() {
     this.calculateBadgeManagers();
+    this.calculateBadgeUpgrades();
+    localStorage.setItem(`world_${this.username}`, JSON.stringify(this.world));
+
+
   }
   onProductionDone($event: { p: Product; qt: number }) {
     let moneyMade = $event.qt
     this.world.money += moneyMade;
     this.world.score += moneyMade;
+    localStorage.setItem(`world_${this.username}`, JSON.stringify(this.world));
+
   }
 
 
   onBuy(cost: number) {
     this.world.money -= cost;
+    localStorage.setItem(`world_${this.username}`, JSON.stringify(this.world));
+
   }
 
 
@@ -117,5 +185,22 @@ export class HomeComponent {
   generateRandomUsername(): string {
     return 'Captain' + Math.floor(Math.random() * 10000);
   }
+  toggleUnlocks() {
+    console.log("toggleUnlocks() called, changing showUnlocks");
+    this.showUnlocks = !this.showUnlocks;
+  }
   
+
+  closeUnlocks(event: Event) {
+    event.stopPropagation();
+    this.showUnlocks = false;
+  }
+  toggleUpgrades() {
+    console.log("toggleUpgrades() called, changing showUpgrades");
+    this.showUpgrades = !this.showUpgrades;
+  }
+  toggleInvestors() {
+    console.log("toggleInvestors() called, changing showUpgrades");
+    this.showInvestors = !this.showInvestors;
+  }
 }

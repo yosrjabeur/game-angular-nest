@@ -1,20 +1,39 @@
-<div class="upgrades-content" *ngIf="selectedCategory === 'cash' && world?.upgrades">
-    <mat-card *ngFor="let upgrade of world.upgrades" class="upgrade-card">
-      <div class="upgrade-image">
-        <img [src]="server + upgrade?.logo" alt="logo">
-      </div>
-      <mat-card-content>
-        <h3>{{ upgrade?.name }}</h3>
-        <p>Boost: {{ world.products[upgrade.idcible - 1].name }} profits x {{ upgrade.ratio }}</p>
-        <p>Price: {{ upgrade?.seuil }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button *ngIf="world" mat-raised-button color="primary" 
+<div class="upgrades-container">
+  <!-- En-tête avec les boutons de catégories et bouton de fermeture -->
+  <div class="upgrades-header">
+    <h2>Upgrades</h2>
+    <button class="close-button" (click)="closeUpgrades()">✖</button>
+    <div class="upgrade-tabs">
+      <button [class.active]="selectedCategory === 'cash'" (click)="selectedCategory = 'cash'">
+        Cash Upgrades
+      </button>
+      <button [class.active]="selectedCategory === 'angel'" (click)="selectedCategory = 'angel'">
+        Angel Upgrades
+      </button>
+      <button [class.active]="selectedCategory === 'gold'" (click)="selectedCategory = 'gold'">
+        Gold Upgrades
+      </button>
+    </div>
+  </div>
+
+  <!-- Liste des upgrades avec scroll -->
+  <div class="upgrades-content">
+    <div class="upgrade-list">
+      <mat-card *ngFor="let upgrade of world.upgrades | slice:0:10" class="upgrade-card">
+        <div class="upgrade-details">
+          <img [src]="server + upgrade?.logo" class="upgrade-icon" alt="logo">
+          <div class="upgrade-info">
+            <h3>{{ upgrade?.name }}</h3>
+            <p>{{ world.products[upgrade.idcible - 1].name || 'All Products' }} profit x{{ upgrade.ratio }}</p>
+            <p class="price">Price: {{ upgrade?.seuil }}</p>
+          </div>
+        </div>
+        <button mat-raised-button class="buy-button"
                 (click)="buyUpgrade(upgrade)"
                 [disabled]="world.money < upgrade.seuil">
-            Buy
+          Buy!
         </button>
-      </mat-card-actions>
-    </mat-card>
+      </mat-card>
+    </div>
   </div>
-  
+</div>

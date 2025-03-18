@@ -18,7 +18,7 @@ export class ManagerComponent  {
     this.server = service.server;
   }
   @Input()
-set wor(value: World) {
+set worldd(value: World) {
   console.log("Received world object:", value);  // Vérifier l'objet world
   this.world = value;
   console.log("Managers:", this.world.managers); // Vérifier si managers existe

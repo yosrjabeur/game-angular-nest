@@ -1,26 +1,33 @@
-<div class="unlocks_page">
-    <div class="page_header">
-      <div class="title">
-        <h5>UNLOCKS</h5>
-      </div>
-      <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
-        <img class="close-btn-img" src="assets/close-btn.jpeg">
-      </button>
-    </div>
-    <div class="description">
-      <em>Want to maximize profit?</em>
-      <p>Look no further! Get your investmentsto these quotas to unlock sweet
-        <br>profit bonuses! Its Recursiveriffic!</p>
-    </div>
-    <div class="unlocks_list" >
-      <div class="unlocks_details" *ngFor="let unlock of world.products">
-        <div class="unlocks_name">{{unlock?.name}}</div>
-        <div class="unlocks_image_container">
-          <img class="unlocks_image" [attr.src]=server+unlock.paliers[unlock.id-1].logo  alt="logo"/>
-        </div>
-        <div class="unlocks_quantity">{{ unlock.quantite }}</div>
-        <div class="unlocks_profit"> {{unlock.paliers[unlock.id-1].name}}</div>
+<div class="unlocks-popup">
+    <div class="unlocks-container">
+      <!-- Bouton de fermeture -->
+      <button class="close-btn" (click)="closeUnlocks()">✖</button>
   
+      <!-- En-tête -->
+      <div class="page-header">
+        <h2>Unlocks <span class="progress">✔ 12/626</span></h2>
+      </div>
+  
+      <!-- Description -->
+      <div class="description">
+        <p>Maximize profits! Reach these quotas to unlock sweet bonuses. It's Recursiveriffic!</p>
+      </div>
+  
+      <!-- Liste des Unlocks (Scroll horizontal) -->
+      <div class="unlocks-list">
+        <div class="unlock-item" *ngFor="let product of world.products">
+          <div *ngFor="let unlock of product.paliers">
+            <div *ngIf="product.quantite < unlock.seuil" class="unlock-card">
+              <div class="unlock-header">{{ unlock.name }}</div>
+              <div class="unlock-image">
+                <img [src]="server + unlock.logo" alt="unlock logo" />
+              </div>
+              <div class="unlock-quantity">Unlock at: {{ unlock.seuil }}</div>
+              <div class="unlock-bonus">{{ unlock.typeratio }}: x{{ unlock.ratio }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
+  

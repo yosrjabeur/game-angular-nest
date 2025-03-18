@@ -188,4 +188,73 @@ html, body {
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+.unlocks-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  z-index: 1000;
+}
+/* Empêche le scroll horizontal */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/* Conteneur principal avec scroll vertical SEULEMENT */
+.container {
+  display: flex;
+  min-height: 100vh;
+  overflow-y: hidden; /* Permet le scroll en hauteur */
+  overflow-x: hidden; /* Empêche le scroll horizontal */
+}
+
+/* Empêche le déplacement des éléments quand une pop-up s'ouvre */
+.main_content {
+  flex: 1;
+  padding: 80px 20px 20px 250px;
+  overflow-x: hidden; /* Bloque le scroll horizontal */
+}
+
+/* Fixer la pop-up au centre de l'écran sans affecter le contenu derrière */
+.investors-popup,
+.manager-popup,
+.unlocks-popup,
+.upgrades-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.9); /* Assombrit le fond */
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Quand une pop-up est ouverte, empêcher le scroll de la page */
+body.modal-open {
+  overflow: hidden;
+  height: 100vh; /* Empêche le scroll vertical */
+
+}
+.world-display {
+  font-size: 1.5em;
+  color: #8E44AD; /* Un peu de style avec une couleur personnalisée */
+  padding: 10px;
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+
 

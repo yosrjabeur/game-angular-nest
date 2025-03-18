@@ -1,25 +1,31 @@
-<div class="managers_page">
-    <div class="page_header">
-      <div class="title">
-        <h5>ANGEL INVESTORS</h5>
-      </div>
-      <button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close">
-        <img class="close-btn-img" src="assets/close-btn.jpeg">
-      </button>
+<div class="investors-container">
+    <div class="header">
+      <h2>Angel Investors</h2>
+      <button class="close-btn" (click)="closeModal()">✖</button>
     </div>
+  
     <div class="description">
-      <em>Holy smokes look at those profits!</em>
-      <p>The more money you gain, the more Angel investors you attract!
-        <br>these blokes increase profits and unlock new upgrades. </p>
+      <p><em>Putting the 'Holy' back in "Holy smokes! Look at those profits!"</em></p>
+      <p>The more money you earn, the more Angel Investors you can attract!</p>
     </div>
-    <div class="investors_content">
-      <div class="Investors_count"> Total Angels <span>{{ world.activeangels }}</span></div>
-      <div class="investor_action">
-        <div class="Investors_bonus">Bonus per Angel <span> x{{ world.angelbonus }} Profit</span></div>
-        <div class="Investors_active">Angels to claim <span>{{ calcAngelToClaim() }}</span></div>
+  
+    <div class="investors-info">
+      <div class="total-angels">
+        <h3>Total Angels</h3>
+        <p>{{ world.totalangels }}</p>
       </div>
-      <div class="claim_btn" (click)="resetWorld()">
-        <button type="button" class="btn" >Claim Angels !</button>
+  
+      <div class="bonus-per-angel">
+        <h3>Bonus Per Angel</h3>
+        <p>2% <span class="bonus">+{{ world.angelbonus }}% Bonus!</span></p>
+      </div>
+  
+      <div class="angels-to-claim">
+        <h3>Angels to Claim</h3>
+        <p>{{ calcAngelToClaim() }}</p>
       </div>
     </div>
+  
+    <button class="claim-btn" (click)="resetWorld()">Claim Angel Investors</button>
   </div>
+  
