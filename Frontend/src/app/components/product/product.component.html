@@ -5,26 +5,24 @@
       <div class="quantity">{{ _product.quantite }}</div>
     </div>
     
-    
     <div class="product_info">
       <app-progressbar
         class="progressbar-container"
         [initialValue]="initialValue" 
         [vitesse]="_product.vitesse" 
         [orientation]="orientation" 
-        [auto]="true" 
-        [run]="true"
+        [auto]="false" 
+        [run]="run"
         [frontcolor]="'#8E44AD'" 
         [backcolor]="'#2C3E50'">
       </app-progressbar>
       
       <div class="purchase_section">
         <button class="purchase_button" (click)="buyProduct()">
-          <span>Acheter&nbsp;</span> {{ _product.cout | number:'1.2-2' }}
+          <span>Buy &nbsp;&nbsp;</span> {{ displayCost | number:'1.2-2' }}
         </button>
         <div class="timer">{{ _product.timeleft | number:'1.2-2' }}</div>
       </div>
-      
     </div>
   </div>
 </div>
@@ -36,7 +34,7 @@
     </div>
     <div class="empty_details">
       <span class="empty_name">{{ _product.name || "Produit inconnu" }}</span><br>
-      <span class="empty_price">{{ _product.cout | number:'1.2-2' }} $</span>
+      <span class="empty_price">{{ displayCost | number:'1.2-2' }} $</span>
     </div>
   </div>
 </ng-template>

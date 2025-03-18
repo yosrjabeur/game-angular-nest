@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { World } from '../../models/world';
 import { WebserviceService } from '../../services/webservice.service';
 import { Product } from '../../models/product';
@@ -16,7 +16,7 @@ import { InvestorsComponent } from "../investors/investors.component";
   selector: 'app-home',
   imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent, FormsModule, UnlocksComponent, UpgradesComponent, InvestorsComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   multiplier: number = 1;
@@ -31,6 +31,10 @@ export class HomeComponent {
   badgeManagers: number = 0;
   badgeUpgrades: number = 0; // Compteur des upgrades achetables
   username: string = ''; // Ensure the username variable is defined and initialized
+  
+  // Référence à tous les composants produits rendus
+  @ViewChildren(ProductComponent) productComponents!: QueryList<ProductComponent>;
+
   constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
     this.server= service.server
     service.getWorld(this.service.user).then(
@@ -46,19 +50,38 @@ export class HomeComponent {
   }
   ngOnInit(): void {
     const savedUsername = localStorage.getItem('username');
-
-  if (savedUsername) {
-    this.username = savedUsername;
-    this.service.setUsername(this.username);
-    this.loadUserWorld(); // Charge le monde lié à l'utilisateur
-  } else {
-    this.username = this.generateRandomUsername();
-    localStorage.setItem('username', this.username);
-    this.service.setUsername(this.username);
-    this.createNewWorld(); // Crée un nouveau monde pour ce nouvel utilisateur
-  }
+  
+    if (savedUsername) {
+      this.username = savedUsername;
+      this.service.setUsername(this.username);
+      this.loadUserWorld(); // Charge le monde lié à l'utilisateur
+    } else {
+      this.username = this.generateRandomUsername();
+      localStorage.setItem('username', this.username);
+      this.service.setUsername(this.username);
+      this.createNewWorld(); // Crée un nouveau monde pour ce nouvel utilisateur
+    }
+  
     this.calculateBadgeManagers();
   }
+  
+    
+  saveUsername() {
+    if (this.username.trim()) {
+      localStorage.setItem('username', this.username);
+      this.service.setUsername(this.username);
+  
+      // Charger un monde existant pour le nouvel utilisateur ou en créer un nouveau
+      this.service.getWorld(this.username).then(world => {
+        if (world.data.getWorld) {
+          this.world = world.data.getWorld; // Charger le monde existant
+        } else {
+          this.createNewWorld(); // Créer un nouveau monde
+        }
+      });
+    }
+  }
+
   // Charger le monde d'un utilisateur existant
 loadUserWorld(): void {
   const savedWorld = localStorage.getItem(`world_${this.username}`);
@@ -70,6 +93,16 @@ loadUserWorld(): void {
     this.createNewWorld();
   }
 }
+  onProductUpdated(product: Product) {
+    // Attendre que la vue soit initialisée
+    setTimeout(() => {
+      const productComp = this.productComponents.find(pc => pc._product.id === product.id);
+      if (productComp) {
+        productComp.startFabrication();
+      }
+    });
+  }
+
 
 // Créer un nouveau monde et l'enregistrer pour un nouvel utilisateur
 createNewWorld(): void {
@@ -78,23 +111,6 @@ createNewWorld(): void {
     localStorage.setItem(`world_${this.username}`, JSON.stringify(this.world));
   });
 }
-saveUsername() {
-  if (this.username.trim()) {
-    localStorage.setItem('username', this.username);
-    this.service.setUsername(this.username);
-
-    // Charger un monde existant pour le nouvel utilisateur ou en créer un nouveau
-    this.service.getWorld(this.username).then(world => {
-      if (world.data.getWorld) {
-        this.world = world.data.getWorld; // Charger le monde existant
-      } else {
-        this.createNewWorld(); // Créer un nouveau monde
-      }
-    });
-  }
-}
-
-  
   calculateBadgeManagers() {
     const oldCount = this.badgeManagers;
     // On compte les managers qui ne sont pas débloqués et sont abordables
@@ -158,16 +174,41 @@ saveUsername() {
       this.multiplier = 1;
       this.multiplierLabel = 'BUY x1';
     }
-    //this.cdRef.detectChanges(); 
-  }
-  
+    // Mise à jour des coûts dans tous les composants produits
+    if (this.productComponents) {
+      this.productComponents.forEach(productComponent => {
+        productComponent.updateBuyButtonDisplay();
+      });
+    }
+}
+
   calcMaxCanBuy(): number {
-    if (!this.product || !this.world.money) {return 0};
+    if (!this.product || !this.world.money || this.world.money <= 0) {
+      return 0;
+    }
     const cout = this.product.cout;
     const croissance = this.product.croissance;
-    const money = this.world.money;
-    return Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
+
+    // Vérifier si cout et croissance sont des valeurs valides
+    if (!cout || cout <= 0 || !croissance || croissance <= 1) {
+      return 0;
+    }
+
+   // Calculer le nombre maximum d'achats possibles
+    const maxBuy = Math.floor(Math.log((this.world.money * (croissance - 1) / cout) + 1) / Math.log(croissance));
+    
+    // Vérifier si le résultat est un nombre valide
+    return isNaN(maxBuy) ? 0 : maxBuy;
   }
+
+  getMultiplierDisplay(): string {
+    if (this.multiplier === -1) {
+      return 'MAX';
+    } else {
+      return `x${this.multiplier}`;
+    }
+  }
+
   calculateTotalCost(quantite: number): number {
     const cout = this.product.cout;
     const croissance = this.product.croissance;

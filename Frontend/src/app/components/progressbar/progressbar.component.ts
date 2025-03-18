@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, NgZone, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+
 export enum Orientation {
   horizontal = 'horizontal',
   vertical = 'vertical'
@@ -11,51 +12,72 @@ export enum Orientation {
   styleUrl: './progressbar.component.css'
 })
 export class ProgressbarComponent implements OnChanges, OnDestroy {
-  @Input()
-frontcolor = '';
-@Input()
-backcolor = '';
+  @Input() frontcolor = '';
+  @Input() backcolor = '';
+  @Input() initialValue = 0;
+  @Input() vitesse = 0;
+  @Input() orientation: Orientation = Orientation.horizontal;
+  @Input() auto = false;
+  @Input() run = false;
 
-@Input()
-initialValue = 0;
+  @ViewChild('canvasRef') canvasRef: ElementRef | undefined;
+  animationRef = { value: 0 };
 
-@Input()
-vitesse = 0;
-
-@Input()
-orientation: Orientation = Orientation.horizontal;
-
-@Input()
-auto = false;
-
-@Input()
-run = false;
-
-@ViewChild('canvasRef') canvasRef: ElementRef | undefined;
-animationRef = {value: 0};
-
-  constructor(private ngZone: NgZone) {
-  }
+  constructor(private ngZone: NgZone) {}
 
   ngAfterViewInit() {
-    this.restartAnim()
+    setTimeout(() => {
+      this.resetCanvas();
+      if (this.run) {
+        this.restartAnim();
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('initialValue')) {
-      this.restartAnim();
-    }
-    if (changes.hasOwnProperty('vitesse')) {
-      this.restartAnim();
-    }
     if (changes.hasOwnProperty('run')) {
+      if (this.run) {
+        this.restartAnim();
+      } else if (this.animationRef.value !== 0) {
+        cancelAnimationFrame(this.animationRef.value);
+        this.animationRef.value = 0;
+        this.resetCanvas();
+      }
+    }
+    if ((changes.hasOwnProperty('initialValue') || 
+         changes.hasOwnProperty('vitesse')) && this.run) {
       this.restartAnim();
     }
   }
 
-restartAnim() {
+  resetCanvas() {
+    if (this.canvasRef) {
+      const ctx = this.canvasRef.nativeElement.getContext('2d');
+      if (ctx) {
+        const width = this.canvasRef.nativeElement.width;
+        const height = this.canvasRef.nativeElement.height;
+        // Force clear the entire canvas
+        ctx.clearRect(0, 0, width, height);
+        
+        // For horizontal orientation, make sure no rectangle is drawn
+        if (this.orientation === Orientation.horizontal) {
+          ctx.fillStyle = this.backcolor || '#FFFFFF';
+          ctx.fillRect(0, 0, 0, height); // Draw nothing for progress
+        } else {
+          // For vertical orientation
+          ctx.fillStyle = this.backcolor || '#FFFFFF';
+          ctx.fillRect(0, height, width, 0); // Draw nothing for progress
+        }
+      }
+    }
+  }
+
+  restartAnim() {
+    if (this.animationRef.value !== 0) { 
+      cancelAnimationFrame(this.animationRef.value); 
+      this.animationRef.value = 0;
+    }
     if (this.vitesse > 0 && this.run) {
-      if (this.animationRef.value !== 0) { cancelAnimationFrame(this.animationRef.value); }
       const ref = this.canvasRef;
       if (ref) {
         this.ngZone.runOutsideAngular(() =>
@@ -66,28 +88,30 @@ restartAnim() {
     }
   }
 
-ngOnDestroy() {
-    if (this.animationRef.value !== 0) { cancelAnimationFrame(this.animationRef.value); }
+  ngOnDestroy() {
+    if (this.animationRef.value !== 0) { 
+      cancelAnimationFrame(this.animationRef.value);
+      this.animationRef.value = 0; 
+    }
   }
 
-animate(canvasRef: ElementRef, initialValue: number, orientation: Orientation, vitesse: number,
-        animationRef: { value: number }, auto: boolean, frontcolor: string, backcolor: string) {
+  animate(canvasRef: ElementRef, initialValue: number, orientation: Orientation, vitesse: number,
+          animationRef: { value: number }, auto: boolean, frontcolor: string, backcolor: string) {
     let dateRef: number | undefined;
     const ctx = canvasRef.nativeElement.getContext('2d');
     let widthRef = 0;
     let reflength = canvasRef.nativeElement.width;
-    if (orientation === Orientation.vertical) { reflength = canvasRef.nativeElement.height; }
-
+    if (orientation === Orientation.vertical) { 
+      reflength = canvasRef.nativeElement.height; 
+    }
+    this.resetCanvas();
     animationRef.value = requestAnimationFrame(draw);
 
     function fill() {
-      if (!ctx || !widthRef) { return; }
+      if (!ctx || widthRef === undefined) { return; }
       const width = canvasRef.nativeElement.width;
       const height = canvasRef.nativeElement.height;
-    
-      //  Nettoie le canvas avant de dessiner la barre
       ctx.clearRect(0, 0, width, height);
-    
       ctx.fillStyle = frontcolor || '#008800';
       if (orientation === Orientation.horizontal) {
         ctx.fillRect(0, 0, widthRef, height);
@@ -95,30 +119,31 @@ animate(canvasRef: ElementRef, initialValue: number, orientation: Orientation, v
         ctx.fillRect(0, height - widthRef, width, height);
       }
     }
-    
 
     function renderFrame(timestamp: number) {
       if (!ctx || !dateRef) { return; }
       const elapsetime = timestamp - dateRef;
       const percent = (elapsetime * 100) / vitesse;
       widthRef = (percent * reflength) / 100;
-      if (widthRef < reflength) {
-        fill();
-      }
+      if (widthRef > reflength) widthRef = reflength;
+      fill();
     }
 
-
     function draw(timestamp: number) {
-      if (dateRef === undefined) { dateRef = timestamp - initialValue; }
+      if (dateRef === undefined) { 
+        dateRef = timestamp - (initialValue * vitesse / 100); 
+      }
       if (!canvasRef) { return; }
       if (widthRef < reflength) {
         renderFrame(timestamp);
         animationRef.value = requestAnimationFrame(draw);
       } else {
-        reset();
         if (auto) {
+          reset();
           dateRef = timestamp;
           animationRef.value = requestAnimationFrame(draw);
+        } else {
+          animationRef.value = 0;
         }
       }
     }
@@ -127,15 +152,8 @@ animate(canvasRef: ElementRef, initialValue: number, orientation: Orientation, v
       if (!ctx) { return; }
       const width = canvasRef.nativeElement.width;
       const height = canvasRef.nativeElement.height;
-    
-      //  Nettoie complètement le canvas
       ctx.clearRect(0, 0, width, height);
-    
-      ctx.fillStyle = backcolor || '#FFFFFF';
-      ctx.fillRect(0, 0, width, height);
       widthRef = 0;
     }
-        }
-
-
+  }
 }
