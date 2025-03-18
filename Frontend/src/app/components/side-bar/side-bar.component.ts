@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrl: './side-bar.component.css'
 })
 export class SideBarComponent {
-  @Output() showManagersEvent = new EventEmitter<void>(); // Événement pour afficher les managers
+  @Output() showManagersEvent = new EventEmitter<void>(); 
 
   constructor(private router: Router) {}
   Upgrades() {

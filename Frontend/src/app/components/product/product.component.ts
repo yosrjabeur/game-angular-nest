@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Product } from '../../models/product';
 import { World } from '../../models/world';
 import { WebserviceService } from '../../services/webservice.service';
@@ -12,12 +12,19 @@ import { Orientation } from '../progressbar/progressbar.component';
   styleUrl: './product.component.css'
 })
 export class ProductComponent implements OnInit {
-  // Orientation = Orientation;
   _product: Product = new Product();
   _world: World = new World();
   _multiplier = 1;
   server: string;
   qtX = 'X1';
+  
+  // Progress bar properties
+  progressbarvalue = 0;
+  initialValue = 0;
+  run = false;
+  orientation = Orientation.horizontal;
+
+  @ViewChild(ProgressbarComponent) progressBar: ProgressbarComponent | undefined;
   
   constructor(private service: WebserviceService, private cdRef: ChangeDetectorRef,) {
     this.server = service.server;
@@ -38,6 +45,12 @@ export class ProductComponent implements OnInit {
     if (this._product.timeleft > 0) {
       this._product.timeleft = Math.max(0, this._product.timeleft - 0.1); // Decrease time by 0.1s every tick
       this._product.progress = 1 - (this._product.timeleft / this._product.vitesse);
+      
+      // Update the progress bar run state
+      this.run = true;
+    } else {
+      // When time is up, stop the progress bar
+      this.run = false;
     }
     this.calcScore();
   }
@@ -62,9 +75,7 @@ set world(value: World) {
   @Output() notifyProduction = new EventEmitter<{ p: Product; qt: number }>();
 
   calcScore() {
-
     const currentTime = Date.now();
-
     const elapsedTime = (currentTime - this._product.lastupdate);
 
     let moneyMade = 0;
@@ -79,25 +90,25 @@ set world(value: World) {
         this._product.timeleft = this._product.vitesse - remainingTime;
         if (this._product.timeleft === 0) {
           this._product.timeleft = this._product.vitesse;
-
         }
-      } else {
-
+      } else 
         if (this._product.timeleft <= elapsedTime) {
           moneyMade += this._product.revenu * this._product.quantite * (1 + this._world.activeangels * (this._world.angelbonus / 100));
           this._product.timeleft = 0;
+          this.run = false; 
+          // Reset the canvas directly instead of using setTimeout
+          if (this.progressBar) {
+            this.progressBar.resetCanvas();
+          }
         } else {
           this._product.timeleft -= elapsedTime;
-
         }
       }
-    }
-    this._product.lastupdate = currentTime;
-    if (moneyMade > 0) {
-      this.notifyProduction.emit({p: this._product, qt: moneyMade});
-    }
+  this._product.lastupdate = currentTime;
+  if (moneyMade > 0) {
+    this.notifyProduction.emit({p: this._product, qt: moneyMade});
   }
-
+}
  
   calcMaxCanBuy(): number {
     if (!this._product || !this._world.money) {return 0};
@@ -106,8 +117,6 @@ set world(value: World) {
     const money = this._world.money;
     return Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
   }
-
-  
 
 @Input() 
 set multiplier(value: number) {
@@ -138,7 +147,6 @@ buyProduct() {
     this.checkUnlocks(this._world, this._product);
   });
 }
-
 
 checkUnlocks(world: World, product: Product) {
   this.checkProductUnlocks(world, product);
@@ -183,19 +191,18 @@ calculateTotalCost(quantite: number): number {
     if (this._product.timeleft == 0) {
       this.service.lancerProduction(this._world.name, this._product).then(r => {
         this._product.timeleft = this._product.vitesse;
+        // First reset the canvas to ensure it's clear
+        if (this.progressBar) {
+          this.progressBar.resetCanvas();
+        }
+        // Then start a new animation
         this.run = true;
-        setTimeout(() => {
-          this.run = false;
-        }, 10);
+        this.cdRef.detectChanges();
       });
     }
   }
-  // barre progression
-  progressbarvalue=0;
-  initialValue = 0
-  run = false
-  vitesse: number = 0
-  orientation = Orientation.horizontal
+
+
   setProgress(value: number) {
     if (value >= 0 && value <= 100) {
       this.progressbarvalue = value;

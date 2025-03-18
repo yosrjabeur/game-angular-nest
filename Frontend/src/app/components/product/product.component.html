@@ -5,15 +5,14 @@
       <div class="quantity">{{ _product.quantite }}</div>
     </div>
     
-    
     <div class="product_info">
       <app-progressbar
         class="progressbar-container"
         [initialValue]="initialValue" 
         [vitesse]="_product.vitesse" 
         [orientation]="orientation" 
-        [auto]="true" 
-        [run]="true"
+        [auto]="false" 
+        [run]="run"
         [frontcolor]="'#8E44AD'" 
         [backcolor]="'#2C3E50'">
       </app-progressbar>
@@ -24,7 +23,6 @@
         </button>
         <div class="timer">{{ _product.timeleft | number:'1.2-2' }}</div>
       </div>
-      
     </div>
   </div>
 </div>
