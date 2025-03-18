@@ -24,6 +24,9 @@ export class ProductComponent implements OnInit {
   run = false;
   orientation = Orientation.horizontal;
 
+  displayCost: number = 0;
+  maxQuantity: number = 0;
+
   @ViewChild(ProgressbarComponent) progressBar: ProgressbarComponent | undefined;
   
   constructor(private service: WebserviceService, private cdRef: ChangeDetectorRef,) {
@@ -32,6 +35,8 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     setInterval(() => this.updateScore(), 100); // Update every 100ms for smoother gameplay
+     // Initialiser le coût affiché
+     this.updateBuyButtonDisplay();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -121,18 +126,47 @@ set world(value: World) {
   }
 }
  
-  calcMaxCanBuy(): number {
-    if (!this._product || !this._world.money) {return 0};
+calcMaxCanBuy(): number {
+    if (!this._product || !this._world?.money) {
+      return 0;
+    }
     const cout = this._product.cout;
     const croissance = this._product.croissance;
     const money = this._world.money;
-    return Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
+    
+    // Calculer le nombre maximum d'achats possibles
+    const maxBuy = Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
+    return Math.max(0, maxBuy); // Assurer qu'on ne retourne pas de valeur négative
   }
 
 @Input() 
 set multiplier(value: number) {
   this._multiplier = value;
-  if (this._multiplier && this._product) this.calcMaxCanBuy();
+  if (this._multiplier && this._product) {
+    this.calcMaxCanBuy();
+    // Mettre à jour l'affichage du coût quand le multiplicateur change
+    this.updateBuyButtonDisplay();
+  }
+}
+
+updateBuyButtonDisplay() {
+  this.maxQuantity = this.calcMaxCanBuy();
+  
+  if (this._multiplier === -1) {
+    // En mode MAX
+    this.qtX = 'MAX';
+    if (this.maxQuantity > 0) {
+      this.displayCost = this.calculateTotalCost(this.maxQuantity);
+    } else {
+      this.displayCost = this._product.cout; // Prix d'un seul si on ne peut pas acheter
+    }
+  } else {
+    // En mode normal (1, 10, 100)
+    this.qtX = `X${this._multiplier}`;
+    this.displayCost = this.calculateTotalCost(this._multiplier);
+  }
+  
+  this.cdRef.detectChanges();
 }
 
 buyProduct() {
@@ -156,6 +190,9 @@ buyProduct() {
     this._product.quantite += quantity;
     // Vérifier les unlocks après l'achat
     this.checkUnlocks(this._world, this._product);
+
+    // Mettre à jour l'affichage du coût après l'achat
+    this.updateBuyButtonDisplay();
   });
 }
 
@@ -186,11 +223,18 @@ checkAllUnlocks(world: World) {
   });
 }
 
-calculateTotalCost(quantite: number): number {
-  const cout = this._product.cout;
-  const croissance = this._product.croissance;
-  return cout * ((1 - Math.pow(croissance, quantite)) / (1 - croissance))
-}
+  calculateTotalCost(quantite: number): number {
+    if (!this._product) return 0;
+    
+    const cout = this._product.cout;
+    const croissance = this._product.croissance;
+    
+    // Vérifier si la quantité est valide
+    if (quantite <= 0) return 0;
+    
+    // Formule pour calculer le coût total
+    return cout * ((1 - Math.pow(croissance, quantite)) / (1 - croissance));
+  }
 
   updateCost(quantite: number) {
     this._product.cout *= Math.pow(this._product.croissance, quantite);

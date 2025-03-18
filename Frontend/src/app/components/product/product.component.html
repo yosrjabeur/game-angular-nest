@@ -19,7 +19,7 @@
       
       <div class="purchase_section">
         <button class="purchase_button" (click)="buyProduct()">
-          <span>Buy&nbsp;&nbsp;</span> {{ _product.cout | number:'1.2-2' }}
+          <span>Buy &nbsp;&nbsp;</span> {{ displayCost | number:'1.2-2' }}
         </button>
         <div class="timer">{{ _product.timeleft | number:'1.2-2' }}</div>
       </div>
@@ -34,7 +34,7 @@
     </div>
     <div class="empty_details">
       <span class="empty_name">{{ _product.name || "Produit inconnu" }}</span><br>
-      <span class="empty_price">{{ _product.cout | number:'1.2-2' }} $</span>
+      <span class="empty_price">{{ displayCost | number:'1.2-2' }} $</span>
     </div>
   </div>
 </ng-template>

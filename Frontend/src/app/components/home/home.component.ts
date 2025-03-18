@@ -13,7 +13,7 @@ import { FormsModule, NgModel } from '@angular/forms';
   selector: 'app-home',
   imports: [SideBarComponent, ProductComponent, DecimalPipe, CommonModule, MatBadgeModule, ManagerComponent,FormsModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   multiplier: number = 1;
@@ -24,6 +24,10 @@ export class HomeComponent {
   showManagers: boolean = false;
   badgeManagers: number = 0;
   username: string = ''; // Ensure the username variable is defined and initialized
+  
+  // Référence à tous les composants produits rendus
+  @ViewChildren(ProductComponent) productComponents!: QueryList<ProductComponent>;
+
   constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
     this.server= service.server
     service.getWorld(this.service.user).then(
@@ -37,8 +41,7 @@ export class HomeComponent {
       });
     
   }
-   // Référence à tous les composants produits rendus
-   @ViewChildren(ProductComponent) productComponents!: QueryList<ProductComponent>;
+  
     ngOnInit(): void {
     this.saveUsername(); // Assurez-vous que le pseudo est sauvegardé au chargement
     this.calculateBadgeManagers();
@@ -102,16 +105,41 @@ export class HomeComponent {
       this.multiplier = 1;
       this.multiplierLabel = 'BUY x1';
     }
-    //this.cdRef.detectChanges(); 
-  }
-  
+    // Mise à jour des coûts dans tous les composants produits
+    if (this.productComponents) {
+      this.productComponents.forEach(productComponent => {
+        productComponent.updateBuyButtonDisplay();
+      });
+    }
+}
+
   calcMaxCanBuy(): number {
-    if (!this.product || !this.world.money) {return 0};
+    if (!this.product || !this.world.money || this.world.money <= 0) {
+      return 0;
+    }
     const cout = this.product.cout;
     const croissance = this.product.croissance;
-    const money = this.world.money;
-    return Math.floor(Math.log((money * (croissance - 1) / cout) + 1) / Math.log(croissance));
+
+    // Vérifier si cout et croissance sont des valeurs valides
+    if (!cout || cout <= 0 || !croissance || croissance <= 1) {
+      return 0;
+    }
+
+   // Calculer le nombre maximum d'achats possibles
+    const maxBuy = Math.floor(Math.log((this.world.money * (croissance - 1) / cout) + 1) / Math.log(croissance));
+    
+    // Vérifier si le résultat est un nombre valide
+    return isNaN(maxBuy) ? 0 : maxBuy;
   }
+
+  getMultiplierDisplay(): string {
+    if (this.multiplier === -1) {
+      return 'MAX';
+    } else {
+      return `x${this.multiplier}`;
+    }
+  }
+
   calculateTotalCost(quantite: number): number {
     const cout = this.product.cout;
     const croissance = this.product.croissance;
