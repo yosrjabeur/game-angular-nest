@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { World } from '../../models/world';
 import { WebserviceService } from '../../services/webservice.service';
 import { Product } from '../../models/product';
@@ -37,7 +37,9 @@ export class HomeComponent {
       });
     
   }
-  ngOnInit(): void {
+   // Référence à tous les composants produits rendus
+   @ViewChildren(ProductComponent) productComponents!: QueryList<ProductComponent>;
+    ngOnInit(): void {
     this.saveUsername(); // Assurez-vous que le pseudo est sauvegardé au chargement
     this.calculateBadgeManagers();
   }
@@ -45,6 +47,16 @@ export class HomeComponent {
     localStorage.setItem('username', this.username);
     this.service.setUsername(this.username);
   }
+  onProductUpdated(product: Product) {
+    // Attendre que la vue soit initialisée
+    setTimeout(() => {
+      const productComp = this.productComponents.find(pc => pc._product.id === product.id);
+      if (productComp) {
+        productComp.startFabrication();
+      }
+    });
+  }
+
 
   calculateBadgeManagers() {
     const oldCount = this.badgeManagers;

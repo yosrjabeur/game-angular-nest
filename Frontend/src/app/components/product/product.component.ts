@@ -37,7 +37,13 @@ export class ProductComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['_product']) {
       console.log("Produit mis à jour : ", this._product);
-      this.cdRef.detectChanges(); // Assurez-vous que les changements sont propagés
+      
+      // Check if manager status changed or was set
+      if (this._product.managerUnlocked) {
+        this.checkAndStartProduction();
+      }
+      
+      this.cdRef.detectChanges();
     }
   }
 
@@ -51,6 +57,11 @@ export class ProductComponent implements OnInit {
     } else {
       // When time is up, stop the progress bar
       this.run = false;
+      
+      // Auto-restart production if manager is unlocked
+      if (this._product.managerUnlocked) {
+        this.startFabrication();
+      }
     }
     this.calcScore();
   }
@@ -217,4 +228,13 @@ calculateTotalCost(quantite: number): number {
   trackByFn(index: number, product: Product) {
     return product?.id ?? index;
   } 
+
+  // Add this method to ProductComponent
+  checkAndStartProduction() {
+    if (this._product.managerUnlocked && this._product.timeleft === 0) {
+      this.startFabrication();
+    }
+  }
+
+  
 }

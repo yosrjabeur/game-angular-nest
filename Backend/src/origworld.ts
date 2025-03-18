@@ -123,8 +123,8 @@ export const origworld = {
   upgrades: [
     { name: 'Wumpa Fruit', logo: 'icones/product/wumpa.png', seuil: 1000, idcible: 1, ratio: 3, typeratio: RatioType.gain, unlocked: false },
     { name: 'Aku Aku Mask', logo: 'icones/product/akuaku.png', seuil: 2000, idcible: 2, ratio: 3, typeratio: RatioType.vitesse, unlocked: false },
-    { name: 'TNT Crate', logo: 'icones/product/tnt.png', seuil: 3000, idcible: 3, ratio: 4, typeratio: RatioType.gain, unlocked: false },
-    { name: 'Nitro Power', logo: 'icones/product/poison.png', seuil: 3000, idcible: 4, ratio: 4, typeratio: RatioType.gain, unlocked: false }
+    { name: 'TNT Crate', logo: 'icones/product/tnt.png', seuil: 4000, idcible: 3, ratio: 4, typeratio: RatioType.gain, unlocked: false },
+    { name: 'Nitro Power', logo: 'icones/product/poison.png', seuil: 5000, idcible: 4, ratio: 4, typeratio: RatioType.gain, unlocked: false }
 
   ],
   angelupgrades: [
@@ -134,10 +134,10 @@ export const origworld = {
   ],
   managers: [
     { name: 'Crash Bandicoot', logo: 'icones/managers/manager2.png', seuil: 10, idcible: 1, ratio: 0, typeratio: RatioType.gain, unlocked: false },
-    { name: 'Dr. Neo Cortex', logo: 'icones/managers/manager5.png', seuil: 20, idcible: 2, ratio: 0, typeratio: RatioType.gain, unlocked: false },
-    { name: 'Dr. Nitrus Brio', logo: 'icones/managers/manager1.png', seuil: 30, idcible: 3, ratio: 0, typeratio: RatioType.gain, unlocked: false },
-    { name: 'Nefarious Tropy', logo: 'icones/managers/manager4.png', seuil: 30, idcible: 4, ratio: 0, typeratio: RatioType.gain, unlocked: false },
-    { name: 'Dr. N. Gin', logo: 'icones/managers/manager3.png', seuil: 30, idcible: 5, ratio: 0, typeratio: RatioType.gain, unlocked: false },
-    { name: 'Coco Bandicoot', logo: 'icones/managers/manager6.png', seuil: 30, idcible: 6, ratio: 0, typeratio: RatioType.gain, unlocked: false }
+    { name: 'Dr. Neo Cortex', logo: 'icones/managers/manager5.png', seuil: 60, idcible: 2, ratio: 0, typeratio: RatioType.gain, unlocked: false },
+    { name: 'Dr. Nitrus Brio', logo: 'icones/managers/manager1.png', seuil: 180, idcible: 3, ratio: 0, typeratio: RatioType.gain, unlocked: false },
+    { name: 'Nefarious Tropy', logo: 'icones/managers/manager4.png', seuil: 2000, idcible: 4, ratio: 0, typeratio: RatioType.gain, unlocked: false },
+    { name: 'Dr. N. Gin', logo: 'icones/managers/manager3.png', seuil: 10000, idcible: 5, ratio: 0, typeratio: RatioType.gain, unlocked: false },
+    { name: 'Coco Bandicoot', logo: 'icones/managers/manager6.png', seuil: 80000, idcible: 6, ratio: 0, typeratio: RatioType.gain, unlocked: false }
   ]
 };

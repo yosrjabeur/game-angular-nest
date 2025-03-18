@@ -24,8 +24,8 @@
 
     <!-- Fenêtre des Managers -->
     <div *ngIf="showManagers" class="manager-popup">
-      <app-manager [wor]="world" (close)="showManagers = false"></app-manager>
-    </div>
+<!-- In the parent component template -->
+<app-manager [wor]="world" (productUpdated)="onProductUpdated($event)"></app-manager>    </div>
     
     <!-- Products Grid -->
     <div class="products_container" *ngIf="world?.products">
