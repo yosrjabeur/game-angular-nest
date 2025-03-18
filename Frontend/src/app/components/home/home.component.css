@@ -21,6 +21,7 @@
 .header {
   position: absolute;
   top: 20px;
+  padding-right: 100px;
   left: 270px; /* Décalage pour le sidebar */
   right: 20px;
   display: flex;
